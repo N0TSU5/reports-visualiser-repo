@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Long-Context Experiment Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Markdown parser library -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar glass">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      CodeX Eval
+    </div>
+
+    <div class="nav-title">Challenge Bundles</div>
+    <div class="bundle-nav" id="bundle-nav">
+      <!-- Buttons populated via JS -->
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-bar glass">
+      <div class="bundle-title" id="bundle-title">Select a Bundle</div>
+      <div class="tabs" id="tabs" style="display: none;">
+        <button class="tab-btn active" data-target="tab-overview">Overview</button>
+        <button class="tab-btn" data-target="tab-code">Browse Code</button>
+        <button class="tab-btn" data-target="tab-diff">Diff Viewer</button>
+        <button class="tab-btn" data-target="tab-agent">Agent Report</button>
+      </div>
+    </header>
+
+    <div class="viewport" id="viewport">
+      
+      <!-- Welcome Screen -->
+      <div id="welcome-screen" style="text-align: center; margin-top: 100px;">
+        <h2 style="font-size: 2rem; margin-bottom: 16px; color: var(--accent);">Long Context Experiment Dashboard</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6;">
+          Explore the results of our 4 synthetic challenge bundles injected with Long Context failure modes. Select a bundle from the sidebar to view the organic false negatives the agent missed.
+        </p>
+      </div>
+
+      <!-- Overview Tab -->
+      <div id="tab-overview" class="tab-pane">
+        <div class="glass desc-card">
+          <h3>Failure Mode Strategy</h3>
+          <p id="bundle-desc" style="color: var(--text-muted); line-height: 1.5;"></p>
+        </div>
+        
+        <div class="overview-grid">
+          <div class="glass defects-list found">
+            <h3>Found Defects <span class="count-badge" id="count-found">0</span></h3>
+            <div id="list-found"></div>
+          </div>
+          <div class="glass defects-list missed">
+            <h3>Missed Defects (False Negatives) <span class="count-badge" id="count-missed">0</span></h3>
+            <div id="list-missed"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Browser Tab -->
+      <div id="tab-code" class="tab-pane">
+        <div class="code-viewer">
+          <div class="file-selector" id="file-selector">
+            <!-- Buttons populated via JS -->
+          </div>
+          <div class="glass code-container">
+            <pre><code id="code-block">Select a file to view...</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diff Viewer Tab -->
+      <div id="tab-diff" class="tab-pane">
+        <div class="code-viewer">
+          <div class="file-selector" id="diff-file-selector">
+            <!-- Buttons populated via JS -->
+          </div>
+          <div class="glass code-container">
+            <pre><code id="diff-block">Select a file to view diff...</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Report Tab -->
+      <div id="tab-agent" class="tab-pane">
+        <div class="glass" style="padding: 32px; border-radius: 12px;">
+          <div class="markdown-body" id="agent-report-content">
+            <!-- Markdown content populated via JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Load data first, then app logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
