@@ -194,14 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let diffHtml = escapeHtml(file.diff_content || "No diff found.");
     
     // Style diffs
-    diffHtml = diffHtml.split('\\n').map(line => {
+    diffHtml = diffHtml.split('\n').map(line => {
       if (line.startsWith('+') && !line.startsWith('+++')) {
-        return `<span style="color: #4ade80; display: block; width: 100%; background: rgba(74, 222, 128, 0.35);">${line}</span>`;
+        return `<span style="color: #4ade80; display: block; width: 100%; background: rgba(74, 222, 128, 0.15);">${line}</span>`;
       } else if (line.startsWith('-') && !line.startsWith('---')) {
-        return `<span style="color: #f87171; display: block; width: 100%; background: rgba(248, 113, 113, 0.35);">${line}</span>`;
+        return `<span style="color: #f87171; display: block; width: 100%; background: rgba(248, 113, 113, 0.15);">${line}</span>`;
       }
       return line;
-    }).join('\\n');
+    }).join('\n');
 
     diffBlock.innerHTML = diffHtml;
   }
