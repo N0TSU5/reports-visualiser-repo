@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Long-Context Experiment Results</title>
+  <title>CodeX Agent Failure Mode Evaluation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,6 +32,12 @@
   <main class="main-content">
     <header class="top-bar glass">
       <div class="bundle-title" id="bundle-title">Select a Bundle</div>
+      <div id="level-selector-container" style="display: none; margin-left: 16px; margin-right: auto; align-items: center;">
+        <label for="level-selector" style="font-size: 0.85rem; color: var(--text-muted); margin-right: 8px;">Level:</label>
+        <select id="level-selector" class="dropdown-style" style="background: rgba(15, 23, 42, 0.6); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 8px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem;">
+          <!-- Options populated via JS -->
+        </select>
+      </div>
       <div class="tabs" id="tabs" style="display: none;">
         <button class="tab-btn active" data-target="tab-overview">Overview</button>
         <button class="tab-btn" data-target="tab-code">Browse Code</button>
@@ -44,9 +50,9 @@
       
       <!-- Welcome Screen -->
       <div id="welcome-screen" style="text-align: center; margin-top: 100px;">
-        <h2 style="font-size: 2rem; margin-bottom: 16px; color: var(--accent);">Long Context Experiment Dashboard</h2>
+        <h2 style="font-size: 2rem; margin-bottom: 16px; color: var(--accent);">CodeX Failure Mode Evaluation Dashboard</h2>
         <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6;">
-          Explore the results of our 4 synthetic challenge bundles injected with Long Context failure modes. Select a bundle from the sidebar to view the organic false negatives the agent missed.
+          Explore the results of our 6 synthetic challenge bundles injected with Long Context and Security failure modes. Select a bundle from the sidebar to view the organic false negatives the agent missed.
         </p>
       </div>
 
@@ -57,7 +63,17 @@
           <p id="bundle-desc" style="color: var(--text-muted); line-height: 1.5;"></p>
         </div>
         
-        <div class="overview-grid">
+        <div class="glass tipping-card" id="tipping-card" style="display: none; margin-top: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3>Detection Rate Analysis</h3>
+          </div>
+          <div id="tipping-chart-container" class="tipping-chart"></div>
+          <div id="tipping-info-box" style="display: none; margin-top: 16px; padding: 12px 16px; border-radius: 8px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--accent); color: var(--text-main); font-size: 0.9rem; line-height: 1.4;">
+            <!-- Populated via JS on info button click -->
+          </div>
+        </div>
+        
+        <div class="overview-grid" style="margin-top: 24px;">
           <div class="glass defects-list found">
             <h3>Found Defects <span class="count-badge" id="count-found">0</span></h3>
             <div id="list-found"></div>

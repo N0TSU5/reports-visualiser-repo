@@ -1,0 +1,18 @@
+schema_version: '1.0'
+case_id: reference-case
+title: Alder Credit Engine reference case
+organisation: Northstar Commercial Bank
+domain: SME term-loan credit risk
+expected_methodology_assertions: 12
+expected_governance_assertions: 4
+reference_cognitive_calls: 28
+excluded_from_analysis:
+- answer_key.json
+provenance:
+  classification: synthetic
+  private_source_content: false
+  basis:
+  - public regulatory publications
+  - general credit-risk domain knowledge
+  - newly written synthetic code and documentation
+case_profile: reference

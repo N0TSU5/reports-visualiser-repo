@@ -1,0 +1,43 @@
+risk_dependency_graph:
+  pd_floor:
+    - one_year_pd
+    - grade_assignment
+    - stage_assignment
+    - lifetime_pd
+    - expected_credit_loss
+  pd_cap:
+    - one_year_pd
+    - grade_assignment
+    - stage_assignment
+    - expected_credit_loss
+  missing_input_policy:
+    - input_preparation
+    - one_year_pd
+    - portfolio_monitoring
+  grade_boundary:
+    - grade_assignment
+    - grade_migration_monitoring
+  lifetime_horizon_months:
+    - lifetime_pd
+    - stage_2_expected_credit_loss
+  sicr_relative_threshold:
+    - stage_assignment
+    - loss_horizon
+  default_days_past_due:
+    - stage_3_assignment
+    - loss_given_default
+    - exposure_at_default
+  scenario_weights:
+    - probability_weighted_pd
+    - expected_credit_loss
+  downturn_lgd_addon:
+    - loss_given_default
+    - expected_credit_loss
+  ccf:
+    - exposure_at_default
+    - expected_credit_loss
+  discount_method:
+    - discounted_expected_credit_loss
+  monitoring_psi_threshold:
+    - drift_exception
+    - model_governance_escalation

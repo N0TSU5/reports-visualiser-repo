@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     bundleNav.appendChild(btn);
   });
 
+  const levelSelectorContainer = document.getElementById('level-selector-container');
+  const levelSelector = document.getElementById('level-selector');
+  let currentLevelIndex = 0;
+
   function selectBundle(index, btnElement) {
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     btnElement.classList.add('active');
@@ -54,13 +58,109 @@ document.addEventListener('DOMContentLoaded', () => {
     bundleTitle.textContent = `${currentBundle.name} Bundle`;
     bundleDesc.innerHTML = currentBundle.description;
 
+    if (currentBundle.levels && currentBundle.levels.length > 0) {
+      levelSelectorContainer.style.display = 'flex';
+      levelSelector.innerHTML = '';
+      currentBundle.levels.forEach((lvl, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = lvl.name;
+        levelSelector.appendChild(option);
+      });
+      levelSelector.onchange = (e) => selectLevel(parseInt(e.target.value));
+      selectLevel(0);
+    } else {
+      levelSelectorContainer.style.display = 'none';
+      currentLevelIndex = -1;
+      renderOverview();
+      renderTippingPoint();
+      renderCodeBrowser();
+      renderDiffViewer();
+      renderAgentReport();
+      switchTab('tab-overview');
+    }
+  }
+
+  function selectLevel(index) {
+    currentLevelIndex = index;
+    const levelData = currentBundle.levels[index];
+    
+    // Override bundle properties with level-specific properties temporarily
+    currentBundle.files = levelData.files || [];
+    currentBundle.agent_report = levelData.agent_report || "Report not found.";
+    currentBundle.found_defects = levelData.found_defects || [];
+    currentBundle.missed_defects = levelData.missed_defects || [];
+
     renderOverview();
+    renderTippingPoint();
     renderCodeBrowser();
     renderDiffViewer();
     renderAgentReport();
-
     switchTab('tab-overview');
   }
+
+  function renderTippingPoint() {
+    const tippingCard = document.getElementById('tipping-card');
+    const chartContainer = document.getElementById('tipping-chart-container');
+    const infoBox = document.getElementById('tipping-info-box');
+    
+    if (!currentBundle.tipping_data || currentBundle.tipping_data.length === 0) {
+      tippingCard.style.display = 'none';
+      return;
+    }
+    
+    tippingCard.style.display = 'block';
+    chartContainer.innerHTML = '';
+    if (infoBox && currentLevelIndex === -1) infoBox.style.display = 'none';
+
+    currentBundle.tipping_data.forEach((dataPoint, idx) => {
+      const rateStr = dataPoint.detection_rate.replace('%', '');
+      const rate = parseInt(rateStr);
+      const isFailed = rate < 50;
+      
+      const barHeight = Math.max(10, rate) + '%';
+      const failedClass = isFailed ? 'failed' : '';
+      const isActive = idx === currentLevelIndex ? 'outline: 2px solid var(--accent); border-radius: 8px; background: rgba(59,130,246,0.15);' : '';
+      
+      const barHtml = `
+        <div class="tipping-bar-container" style="cursor: pointer; padding: 4px; ${isActive}" onclick="onStepBarClick(${idx}, '${escapeHtml(dataPoint.level)}', '${escapeHtml(dataPoint.description || 'No description available.')}')">
+          <div class="tipping-bar ${failedClass}" style="height: ${barHeight}"></div>
+          <div class="tipping-value">${dataPoint.detection_rate}</div>
+          <div class="tipping-label" style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+            ${escapeHtml(dataPoint.level)}
+            <button class="info-btn" style="background: transparent; border: none; color: #60a5fa; cursor: pointer; font-size: 0.85rem; padding: 0;" title="Click for details">ℹ️</button>
+          </div>
+        </div>
+      `;
+      chartContainer.innerHTML += barHtml;
+    });
+  }
+
+  window.onStepBarClick = function(idx, levelStr, descStr) {
+    if (levelSelector && levelSelector.options[idx]) {
+      levelSelector.value = idx;
+    }
+    selectLevel(idx);
+    toggleLevelInfo(levelStr, descStr);
+  };
+
+  let activeInfoLevel = null;
+  window.toggleLevelInfo = function(levelStr, descStr) {
+    const infoBox = document.getElementById('tipping-info-box');
+    if (!infoBox) return;
+
+    levelStr = levelStr.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+    descStr = descStr.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
+    if (activeInfoLevel === levelStr && infoBox.style.display !== 'none') {
+      infoBox.style.display = 'none';
+      activeInfoLevel = null;
+    } else {
+      activeInfoLevel = levelStr;
+      infoBox.style.display = 'block';
+      infoBox.innerHTML = `<strong>${escapeHtml(levelStr)} Applied Mutation / Injection:</strong><br><span style="color: var(--text-muted); display: block; margin-top: 4px;">${escapeHtml(descStr)}</span>`;
+    }
+  };
 
   function renderOverview() {
     countFound.textContent = currentBundle.found_defects.length;
@@ -86,6 +186,27 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
 
+      let evidenceHtml = '';
+      if (d.evidence && d.evidence.length > 0) {
+        const evList = d.evidence.map(e => `<li><code>${escapeHtml(e)}</code></li>`).join('');
+        evidenceHtml = `
+            <div class="sec-eval">
+                <strong>Evidence Cited:</strong>
+                <ul style="margin-left: 20px; font-size: 0.85rem; color: #94a3b8;">${evList}</ul>
+            </div>
+        `;
+      }
+      
+      let reasoningHtml = '';
+      if (d.eval_reasoning) {
+        reasoningHtml = `
+            <div class="sec-eval">
+                <strong>Evaluation Reasoning:</strong>
+                <p>${escapeHtml(d.eval_reasoning)}</p>
+            </div>
+        `;
+      }
+
       return `
       <div class="defect-item accordion-defect" onclick="this.classList.toggle('expanded')">
         <span class="defect-id">${d.name}</span>
@@ -98,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>${escapeHtml(d.root_cause)}</p>
             ${mutationHtml}
             ${securityHtml}
+            ${evidenceHtml}
+            ${reasoningHtml}
             <button class="jump-btn" onclick="jumpToCode('${escapeHtml(d.target_file)}', '${escapeHtml(d.target_search)}')">
                 Jump to Code ↗
             </button>

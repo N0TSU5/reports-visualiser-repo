@@ -1,0 +1,20 @@
+model_version: alder-1.3.0
+pd_floor: 0.001
+pd_cap: 0.35
+missing_input_policy: zero_fill
+grade_b_upper: 0.03
+lifetime_horizon_months: 48
+sicr_relative_threshold: 2.0
+default_days_past_due: 90
+scenario_weights:
+  baseline: 0.6
+  upside: 0.1
+  downside: 0.4
+scenario_multipliers:
+  baseline: 1.0
+  upside: 0.8
+  downside: 1.4
+downturn_lgd_addon: 0.05
+ccf: 0.25
+discount_method: nominal_rate
+monitoring_psi_threshold: 0.10
