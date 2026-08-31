@@ -1,0 +1,35 @@
+model_version: alder-2.1.0
+pd_floor: 0.005
+pd_cap: 0.35
+pd_floor_application: post_scenario
+missing_input_policy: reject
+sector_intercepts:
+  manufacturing: 0.18
+  services: 0.00
+  retail: 0.12
+grade_b_upper: 0.03
+lifetime_horizon_basis: remaining_contractual_maturity
+lifetime_horizon_cap_months: 60
+sicr_rule: relative_or_30_dpd
+sicr_relative_threshold: 2.0
+sicr_days_past_due_backstop: 30
+default_rule: default_flag_or_utp_or_90_dpd
+default_days_past_due: 90
+scenario_weights:
+  baseline: 0.6
+  upside: 0.1
+  downside: 0.3
+scenario_log_odds_shifts:
+  baseline: 0.0
+  upside: -0.35
+  downside: 0.55
+collateral_haircut: 0.30
+collateral_recovery_basis: net_prior_liens_discounted
+downturn_lgd_addon: 0.05
+ead_balance_basis: projected_at_default
+monthly_principal_repayment_rate: 0.0125
+monthly_limit_reduction_rate: 0.01
+ccf: 0.5
+discount_method: effective_interest_rate
+discount_timing: monthly_fractional
+monitoring_psi_threshold: 0.10

@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const agentReportContent = document.getElementById('agent-report-content');
 
   let currentBundle = null;
+  // What the tabs actually render: either the bundle itself, or the bundle with the
+  // selected level's files/report/defects layered on top. Kept separate so selecting
+  // a level does not overwrite the bundle's own data in reportData.
+  let currentView = null;
 
   function escapeHtml(unsafe) {
     if (!unsafe) return "";
@@ -72,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       levelSelectorContainer.style.display = 'none';
       currentLevelIndex = -1;
+      currentView = currentBundle;
       renderOverview();
       renderTippingPoint();
       renderCodeBrowser();
@@ -84,12 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function selectLevel(index) {
     currentLevelIndex = index;
     const levelData = currentBundle.levels[index];
-    
-    // Override bundle properties with level-specific properties temporarily
-    currentBundle.files = levelData.files || [];
-    currentBundle.agent_report = levelData.agent_report || "Report not found.";
-    currentBundle.found_defects = levelData.found_defects || [];
-    currentBundle.missed_defects = levelData.missed_defects || [];
+
+    // Layer the level's own data over the bundle without mutating reportData.
+    currentView = {
+      ...currentBundle,
+      files: levelData.files || [],
+      agent_report: levelData.agent_report || "Report not found.",
+      found_defects: levelData.found_defects || [],
+      missed_defects: levelData.missed_defects || []
+    };
 
     renderOverview();
     renderTippingPoint();
@@ -104,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartContainer = document.getElementById('tipping-chart-container');
     const infoBox = document.getElementById('tipping-info-box');
     
-    if (!currentBundle.tipping_data || currentBundle.tipping_data.length === 0) {
+    if (!currentView.tipping_data || currentView.tipping_data.length === 0) {
       tippingCard.style.display = 'none';
       return;
     }
@@ -113,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chartContainer.innerHTML = '';
     if (infoBox && currentLevelIndex === -1) infoBox.style.display = 'none';
 
-    currentBundle.tipping_data.forEach((dataPoint, idx) => {
+    currentView.tipping_data.forEach((dataPoint, idx) => {
       const rateStr = dataPoint.detection_rate.replace('%', '');
       const rate = parseInt(rateStr);
       const isFailed = rate < 50;
@@ -163,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function renderOverview() {
-    countFound.textContent = currentBundle.found_defects.length;
-    countMissed.textContent = currentBundle.missed_defects.length;
+    countFound.textContent = currentView.found_defects.length;
+    countMissed.textContent = currentView.missed_defects.length;
 
     const createItem = (d) => {
       // Security fields
@@ -229,8 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     };
 
-    listFound.innerHTML = currentBundle.found_defects.map(createItem).join('');
-    listMissed.innerHTML = currentBundle.missed_defects.map(createItem).join('');
+    listFound.innerHTML = currentView.found_defects.map(createItem).join('');
+    listMissed.innerHTML = currentView.missed_defects.map(createItem).join('');
   }
 
   window.jumpToCode = function(targetFileStr, targetSearchStr) {
@@ -239,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     targetFileStr = targetFileStr.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'");
     targetSearchStr = targetSearchStr.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'");
 
-    const fileIndex = currentBundle.files.findIndex(f => f.filename.endsWith(targetFileStr));
+    const fileIndex = currentView.files.findIndex(f => f.filename.endsWith(targetFileStr));
     if (fileIndex !== -1) {
       const fileBtns = document.querySelectorAll('.file-btn');
       if (fileBtns[fileIndex]) {
@@ -252,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileSelector.innerHTML = '';
     codeBlock.textContent = 'Select a file to view...';
     
-    currentBundle.files.forEach((file, fIndex) => {
+    currentView.files.forEach((file, fIndex) => {
       const btn = document.createElement('button');
       btn.className = 'file-btn';
       btn.textContent = file.filename.split('/').pop();
@@ -260,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fileSelector.appendChild(btn);
     });
 
-    if (currentBundle.files.length > 0) {
+    if (currentView.files.length > 0) {
       selectFile(0, fileSelector.firstChild);
     }
   }
@@ -269,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.file-btn').forEach(btn => btn.classList.remove('active'));
     btnElement.classList.add('active');
     
-    const file = currentBundle.files[index];
+    const file = currentView.files[index];
     let contentHtml = escapeHtml(file.content);
 
     if (highlightSearchStr) {
@@ -296,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     diffFileSelector.innerHTML = '';
     diffBlock.textContent = 'Select a file to view diff...';
     
-    currentBundle.files.forEach((file, fIndex) => {
+    currentView.files.forEach((file, fIndex) => {
       const btn = document.createElement('button');
       btn.className = 'file-btn';
       btn.textContent = file.filename.split('/').pop();
@@ -304,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       diffFileSelector.appendChild(btn);
     });
 
-    if (currentBundle.files.length > 0) {
+    if (currentView.files.length > 0) {
       selectDiffFile(0, diffFileSelector.firstChild);
     }
   }
@@ -313,33 +321,111 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tab-diff').querySelectorAll('.file-btn').forEach(btn => btn.classList.remove('active'));
     btnElement.classList.add('active');
     
-    const file = currentBundle.files[index];
+    const file = currentView.files[index];
     let diffHtml = escapeHtml(file.diff_content || "No diff found.");
     
     // Style diffs
-    diffHtml = diffHtml.split('\\n').map(line => {
+    diffHtml = diffHtml.split('\n').map(line => {
       if (line.startsWith('+') && !line.startsWith('+++')) {
         return `<span style="color: #4ade80; display: block; width: 100%; background: rgba(74, 222, 128, 0.35);">${line}</span>`;
       } else if (line.startsWith('-') && !line.startsWith('---')) {
         return `<span style="color: #f87171; display: block; width: 100%; background: rgba(248, 113, 113, 0.35);">${line}</span>`;
       }
       return line;
-    }).join('\\n');
+    }).join('\n');
 
     diffBlock.innerHTML = diffHtml;
   }
 
   function renderAgentReport() {
-    if (currentBundle.agent_report && currentBundle.agent_report !== "Report not found.") {
-      agentReportContent.innerHTML = marked.parse(currentBundle.agent_report);
+    if (currentView.agent_report && currentView.agent_report !== "Report not found.") {
+      agentReportContent.innerHTML = marked.parse(currentView.agent_report);
     } else {
       agentReportContent.innerHTML = '<p style="color:var(--text-muted)">No markdown report found.</p>';
     }
   }
 
+  // ---- Case Bundle viewer -------------------------------------------------
+  // Browses the real directory under cases/ -- docs, config, portfolio data,
+  // tests and answer key included, not just the files a finding points at.
+
+  const dirSelector = document.getElementById('bundle-dir-selector');
+  const dirMeta = document.getElementById('bundle-dir-meta');
+  const bundleTree = document.getElementById('bundle-tree');
+  const bundleFileBlock = document.getElementById('bundle-file-block');
+
+  // data.js bundle id -> the cases/ directory prefix, indexed by level.
+  const CASE_DIRS = {
+    dilution: [1, 2, 3, 4, 5].map(n => `challenge_dilution_${n}`),
+    scattered: [1, 2, 3, 4, 5].map(n => `challenge_scattered_${n}`),
+    sec_authority_escalation: [1, 2, 3, 4].map(n => `challenge_security_authority_${n}`),
+    sec_goal_redirection: [1, 2, 3].map(n => `challenge_security_goal_${n}`),
+    sec_linguistic_confusion: [1, 2, 3].map(n => `challenge_security_linguistic_${n}`),
+    fatigue_docs: [1, 2, 3, 4, 5, 6, 7].map(n => `challenge_fatigue_docs_L${n}`)
+  };
+
+  const haveCases = typeof caseIndex !== 'undefined';
+  if (haveCases) {
+    Object.keys(caseIndex.bundles).sort().forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      dirSelector.appendChild(opt);
+    });
+    dirSelector.onchange = e => renderBundleDir(e.target.value);
+  }
+
+  function syncBundleDir() {
+    if (!haveCases || !currentBundle) return;
+    const dirs = CASE_DIRS[currentBundle.id];
+    const name = dirs && dirs[currentLevelIndex];
+    if (name && caseIndex.bundles[name]) {
+      dirSelector.value = name;
+      renderBundleDir(name);
+    }
+  }
+
+  function renderBundleDir(name) {
+    const files = caseIndex.bundles[name] || [];
+    const totalLines = files.reduce((sum, f) => sum + f.lines, 0);
+    dirMeta.textContent = `${files.length} files · ${totalLines.toLocaleString()} lines`;
+
+    bundleTree.innerHTML = '';
+    let currentDir = null;
+    files.forEach((file, index) => {
+      const dir = file.path.includes('/') ? file.path.split('/')[0] : '(root)';
+      if (dir !== currentDir) {
+        currentDir = dir;
+        const header = document.createElement('div');
+        header.textContent = dir;
+        header.style.cssText = 'color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;' +
+                               'letter-spacing:0.05em;margin:10px 0 4px;padding-left:2px;';
+        bundleTree.appendChild(header);
+      }
+      const btn = document.createElement('button');
+      btn.className = 'file-btn';
+      btn.textContent = file.path.split('/').pop() + (file.truncated ? ' ✂' : '');
+      btn.title = `${file.path} — ${file.lines} lines`;
+      btn.onclick = () => selectBundleFile(name, index, btn);
+      bundleTree.appendChild(btn);
+    });
+
+    bundleFileBlock.textContent = 'Select a file to view...';
+    const first = bundleTree.querySelector('.file-btn');
+    if (first) first.click();
+  }
+
+  function selectBundleFile(name, index, btnElement) {
+    bundleTree.querySelectorAll('.file-btn').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    const file = caseIndex.bundles[name][index];
+    bundleFileBlock.textContent = caseIndex.blobs[file.hash] || '(content unavailable)';
+  }
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       switchTab(btn.dataset.target);
+      if (btn.dataset.target === 'tab-bundle') syncBundleDir();
     });
   });
 

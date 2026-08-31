@@ -1,0 +1,482 @@
+{
+  "run_id": "20260831-221039_validate_credit_risk_fatigue_docs_l6",
+  "case_dir": "/Users/marten/programming/pilotauditffs/code-analysis-solution/projects/synthetic/sme_credit_risk/cases/fatigue_docs_L6",
+  "programme": "validate_credit_risk",
+  "artefacts": [
+    {
+      "path": "code/credit_engine.py",
+      "kind": "code",
+      "sha256": "a09a213b36e5b010df74888362c59d6b0c037e1e14ba40d7421519c56b1ddb7d",
+      "size_bytes": 75477
+    },
+    {
+      "path": "config/governance_record.yaml",
+      "kind": "configuration",
+      "sha256": "41ab89c3b5bfe133b9f221dca4bf144f619c5a9114f2039ef8f87d7c7fcbb211",
+      "size_bytes": 308
+    },
+    {
+      "path": "config/model_config.yaml",
+      "kind": "configuration",
+      "sha256": "b3b3c371c0c5cad861f9fbcf14e2d22cdd5a23faaab564ed651f37e34ab3f6ce",
+      "size_bytes": 938
+    },
+    {
+      "path": "config/system_map.yaml",
+      "kind": "configuration",
+      "sha256": "da909a54e9832385423e33ac8f3a1aa679221bcd8ae7cf3ceec73611ee73ceeb",
+      "size_bytes": 1478
+    },
+    {
+      "path": "data/portfolio.csv",
+      "kind": "data",
+      "sha256": "dd2186d5fc0b418ce567d58deb5e2bea7891e32c0d93baede290d7322fcd9f21",
+      "size_bytes": 962
+    },
+    {
+      "path": "docs/methodology.md",
+      "kind": "document",
+      "sha256": "8580c83d17a906fab27273a18ff076ec92b8c426cbc84faebbd1ed25509361db",
+      "size_bytes": 7143
+    },
+    {
+      "path": "docs/model_governance.md",
+      "kind": "document",
+      "sha256": "c7cc690669b932c0acda2bb1dd3d35f24f100e122db6d7da69084b8d959572d2",
+      "size_bytes": 2166
+    },
+    {
+      "path": "docs/regulatory_control_digest.md",
+      "kind": "document",
+      "sha256": "056d3e5fa9378725158693289b99d4b88172e2485b4eeb99f9b56c099068d24c",
+      "size_bytes": 1600
+    },
+    {
+      "path": "evidence/monitoring_record.json",
+      "kind": "test_evidence",
+      "sha256": "0a4ea9b4d41ab345c568f4e5eccaf4d88dcba37351c18f3edbe1176d0c44b85e",
+      "size_bytes": 305
+    },
+    {
+      "path": "tests/validation_results.json",
+      "kind": "test_evidence",
+      "sha256": "9d4e01e126d1431b88d6dcf7cb007c4fee51839462c67f770cf4ec24e90aaae4",
+      "size_bytes": 708
+    }
+  ],
+  "findings": [
+    {
+      "id": "CA-75B675DD6F",
+      "assertion_id": "METH-DEFAULT-001",
+      "title": "Default Rule differs from declared intent",
+      "category": "default_definition",
+      "severity": 5,
+      "confidence": 0.99,
+      "adjudication_state": "unresolved",
+      "affected_component": "config/model_config.yaml",
+      "location": "988:1004",
+      "expected": "default_flag_or_utp_or_90_dpd",
+      "observed": "default_flag_or_utp_or_90_dpd",
+      "consequence": "An SME facility marked unlikely to pay, but without a default flag or sufficient days past due, will remain in Stage 1 or may enter Stage 2 rather than Stage 3, potentially understating expected credit loss.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0071-L0083",
+          "snippet": "id: METH-DEFAULT-001; statement: A default flag, an unlikely-to-pay indicator or at least 90 days past due causes Stage 3 treatment; expected: default_flag_or_utp_or_90_dpd."
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 16",
+          "snippet": "default_rule: default_flag_or_utp_or_90_dpd"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 12",
+          "snippet": "default_rule:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0071-L0083",
+          "snippet": "A default flag, an unlikely-to-pay indicator or at least 90 days past due causes Stage 3 treatment."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "988:1004",
+          "snippet": "unlikely_to_pay: bool, ... if default_flag or days_past_due >= config[\"default_days_past_due\"]: return 3"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "insufficient_evidence"
+      },
+      "suggested_action": "Include unlikely_to_pay in the Stage 3 condition, for example: if default_flag or unlikely_to_pay or days_past_due >= config[\"default_days_past_due\"]: return 3. Also verify that default_days_past_due is configured as 90 and add tests covering each trigger independently.",
+      "provenance": [
+        "assertion:METH-DEFAULT-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-352DEC65DC",
+      "assertion_id": "GOV-VERSION-001",
+      "title": "Approved Model Version differs from declared intent",
+      "category": "model_change_governance",
+      "severity": 5,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/governance_record.yaml",
+      "location": "model_version and reporting_date",
+      "expected": "alder-2.1.0",
+      "observed": "alder-2.0.0",
+      "consequence": "The supplied approval and validation evidence cannot be relied upon as version-specific control evidence for alder-2.1.0. The changed production implementation may therefore lack current approval and validation support.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "id: GOV-VERSION-001; statement: The approval and independent validation evidence applies to production model version alder-2.1.0.; expected: alder-2.1.0; unit: model version"
+        },
+        {
+          "file": "config/governance_record.yaml",
+          "location": "line 3",
+          "snippet": "approved_model_version: alder-2.0.0"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "The approval and independent validation evidence applies to production model version alder-2.1.0."
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "model_version and release_note",
+          "snippet": "\"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version",
+          "snippet": "\"model_version\": \"alder-2.1.0\""
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "executed_at, model_version, and release_note",
+          "snippet": "Executed at 2026-02-12T16:20:00Z for alder-2.0.0; no rerun was recorded after the alder-2.1.0 staging and cash-flow timing change."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version and reporting_date",
+          "snippet": "model_version is alder-2.1.0 and reporting_date is 2026-07-31."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Obtain documented approval for alder-2.1.0 and rerun appropriately scoped independent validation against that exact version, including the staging and cash-flow timing changes. Reconcile the approved-version field before representing the release as approved and validated.",
+      "provenance": [
+        "assertion:GOV-VERSION-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-2FCD2F821B",
+      "assertion_id": "METH-EAD-001",
+      "title": "Ead Balance Basis differs from declared intent",
+      "category": "exposure_at_default",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "1721:1727",
+      "expected": "projected_at_default",
+      "observed": "projected_at_default",
+      "consequence": "EAD and expected credit loss can be overstated or otherwise misstated when drawn principal or available limits decline before the expected default date, despite the configuration declaring projected-at-default treatment.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0135-L0147",
+          "snippet": "id: METH-EAD-001; statement: Exposure at default uses projected drawn balance and available undrawn commitment at the expected default date; expected: projected_at_default."
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 29",
+          "snippet": "ead_balance_basis: projected_at_default"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 27",
+          "snippet": "ead_balance_basis:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0135-L0147",
+          "snippet": "Exposure at default uses projected drawn balance and available undrawn commitment at the expected default date; expected: projected_at_default."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "1721:1727",
+          "snippet": "def exposure_at_default(balance: float, undrawn: float, months_to_expected_default: int, config: dict[str, Any]) -> float: return balance + (config[\"ccf\"] * undrawn)"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 27",
+          "snippet": "ead_balance_basis maps to exposure_at_default in code/credit_engine.py, span 1721:1727, with consequences for exposure_at_default and expected_credit_loss."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "1721:1727",
+          "snippet": "def exposure_at_default(balance, undrawn, months_to_expected_default, config): ... return balance + (config[\"ccf\"] * undrawn)"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Project the drawn balance and remaining available commitment through months_to_expected_default, including contractual amortisation and limit reductions, before applying the CCF and calculating EAD. Add tests showing that EAD changes appropriately as the expected default date changes.",
+      "provenance": [
+        "assertion:METH-EAD-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-F4126F30F0",
+      "assertion_id": "GOV-MON-001",
+      "title": "Monitoring Currentness differs from declared intent",
+      "category": "monitoring_governance",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "docs/model_governance.md",
+      "location": "reporting_date, open_exception_count, and status_recorded_by_owner",
+      "expected": "current_through_2026-07",
+      "observed": "No mapped implementation fact",
+      "consequence": "Three required monthly monitoring cycles\u2014May, June, and July 2026\u2014are not evidenced as completed, potentially delaying detection and escalation of model drift or performance deterioration.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "id: GOV-MON-001; statement: Monthly monitoring evidence is complete through the 31 July 2026 reporting date.; expected: current_through_2026-07; unit: control state"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "Monthly monitoring evidence is complete through the 31 July 2026 reporting date."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "required_frequency, completed_periods, and latest_completed_period",
+          "snippet": "\"required_frequency\": \"monthly\"; completed periods are 2026-01 through 2026-04; \"latest_completed_period\": \"2026-04\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "reporting_date, open_exception_count, and status_recorded_by_owner",
+          "snippet": "\"reporting_date\": \"2026-07-31\"; \"open_exception_count\": 0; \"status_recorded_by_owner\": \"current\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "required_frequency, completed_periods, and latest_completed_period",
+          "snippet": "required_frequency is monthly; completed periods are 2026-01 through 2026-04; latest_completed_period is 2026-04."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "reporting_date, open_exception_count, and status_recorded_by_owner",
+          "snippet": "reporting_date is 2026-07-31; open_exception_count is 0; status_recorded_by_owner is current."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Complete or provide the May\u2013July 2026 monitoring evidence, assess whether missed cycles require escalation, and correct the current status and exception count until all required periods are supported.",
+      "provenance": [
+        "assertion:GOV-MON-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-D2E091D62B",
+      "assertion_id": "METH-ECL-001",
+      "title": "Discount Timing differs from declared intent",
+      "category": "discounting",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "1738-1744",
+      "expected": "monthly_fractional",
+      "observed": "monthly_fractional",
+      "consequence": "Cash shortfalls within the first 12 months receive no discounting, while later non-integer-year horizons are discounted for too short a period, overstating the present value of expected credit loss relative to the declared methodology.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0163-L0175",
+          "snippet": "id: METH-ECL-001; statement: Expected credit loss is discounted using fractional monthly timing rather than completed whole years; expected: monthly_fractional."
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 34",
+          "snippet": "discount_timing: monthly_fractional"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 32",
+          "snippet": "discount_timing:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0163-L0175",
+          "snippet": "Expected credit loss is discounted using fractional monthly timing rather than completed whole years; expected: monthly_fractional."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "1738:1744",
+          "snippet": "if config[\"discount_method\"] != \"effective_interest_rate\":\n    raise ValueError(\"Unsupported discount method\")\n...\nhorizon_years = months_to_cash_shortfall // 12\nreturn weighted_loss / ((1.0 + effective_interest_rate) ** horizon_years)"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 32",
+          "snippet": "discount_timing maps to expected_credit_loss in code/credit_engine.py, span 1730:1744, with consequences for present_value and expected_credit_loss."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "1738-1744",
+          "snippet": "if config[\"discount_method\"] != \"effective_interest_rate\": ... horizon_years = months_to_cash_shortfall // 12; return weighted_loss / ((1.0 + effective_interest_rate) ** horizon_years)"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Calculate the exponent as `months_to_cash_shortfall / 12.0`, validate or dispatch on `config[\"discount_timing\"]`, and add tests for horizons below 12 months and non-multiples of 12.",
+      "provenance": [
+        "assertion:METH-ECL-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-D23E4BDDCF",
+      "assertion_id": "METH-SICR-001",
+      "title": "Sicr Rule differs from declared intent",
+      "category": "staging",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "unresolved",
+      "affected_component": "config/model_config.yaml",
+      "location": "988:1004",
+      "expected": "relative_or_30_dpd",
+      "observed": "relative_or_30_dpd",
+      "consequence": "A non-defaulted facility meeting only one SICR indicator\u2014either the relative probability increase criterion or the 30-days-past-due criterion\u2014remains in Stage 1, delaying lifetime expected-credit-loss recognition.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0057-L0069",
+          "snippet": "id: METH-SICR-001; statement: A relative probability increase of at least two or 30 days past due triggers Stage 2, subject to any separately evidenced rebuttal; expected: relative_or_30_dpd."
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 13",
+          "snippet": "sicr_rule: relative_or_30_dpd"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 7",
+          "snippet": "sicr_rule:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0057-L0069",
+          "snippet": "A relative probability increase of at least two or 30 days past due triggers Stage 2, subject to any separately evidenced rebuttal; expected: relative_or_30_dpd."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "988:1004",
+          "snippet": "if (relative_change >= config[\"sicr_relative_threshold\"] and days_past_due >= config[\"sicr_days_past_due_backstop\"]): return 2"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "insufficient_evidence"
+      },
+      "suggested_action": "Replace the SICR conjunction with OR semantics for non-defaulted facilities, confirm the configured thresholds are 2 and 30 days, and implement or document any separately supported rebuttal mechanism. Add tests where each criterion is met independently.",
+      "provenance": [
+        "assertion:METH-SICR-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    }
+  ],
+  "summary": "Analysed 10 artefacts through 44 cognitive calls and produced 6 adjudicated findings.",
+  "limitations": [
+    "Assertions are extracted from a single supplied governance document; no external corroboration or implementation assessment was performed.",
+    "Assertions were extracted only from the supplied methodology document and its explicit fenced assertion records.",
+    "No dated approval document, deployment record, release manifest, change-impact assessment, validation report, validator organizational information, or monitoring workpapers were supplied.",
+    "No implementation behavior, answer key, or defect status was assessed.",
+    "No separate approval document, deployment record, validation report, validator organizational chart, or monitoring workpapers were supplied.",
+    "The monitoring record does not establish whether absent periods were never performed, performed late, or performed but omitted; it only shows that completion through July is not evidenced.",
+    "The ownership record lacks an effective date, approving authority, named accountable individual, and change history, limiting assurance over its currentness.",
+    "The production status of alder-2.1.0 is inferred from the assertion and monitoring record rather than independently established.",
+    "The production status of alder-2.1.0 is suggested by the assertion and monitoring record but was not independently established through deployment evidence.",
+    "The public control digest provides contextual themes only. No conclusion is made regarding formal regulatory, legal, accounting, or policy compliance.",
+    "The public-control digest provides contextual themes only; this review does not determine legal, regulatory, accounting, or formal compliance.",
+    "The review is limited to supplied synthetic extracts. File authenticity, completeness, signatures, approvals, provenance, access controls, and audit trails were not independently verified.",
+    "The review is limited to the supplied synthetic extracts; source-file authenticity, completeness, signatures, approvals, and audit trails were not independently verified.",
+    "The validation summary shows four skipped tests and zero coverage for several listed case profiles, but no corresponding assertions were provided for deciding the adequacy of validation coverage.",
+    "Validation results report four skipped tests and zero coverage for several case profiles. Validation adequacy cannot be concluded because corresponding scope requirements, risk assessments, and assertions were not supplied."
+  ],
+  "metrics": {
+    "case_hash": "cbffd09afaafd1e9d91cd9a228979ef7cb22294f2af1d3bb0a46253e2bb86a33",
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "cognitive_call_budget": 52,
+    "cognitive_calls_used": 44,
+    "reference_cognitive_calls": 28,
+    "evidence_followup_budget": 24,
+    "evidence_followups_used": 16,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 199767
+    },
+    "excluded_paths": [
+      "answer_key.json",
+      "case.yaml"
+    ],
+    "warnings": [
+      "Assertions are extracted from a single supplied governance document; no external corroboration or implementation assessment was performed.",
+      "Assertions were extracted only from the supplied methodology document and its explicit fenced assertion records.",
+      "No dated approval document, deployment record, release manifest, change-impact assessment, validation report, validator organizational information, or monitoring workpapers were supplied.",
+      "No implementation behavior, answer key, or defect status was assessed.",
+      "No separate approval document, deployment record, validation report, validator organizational chart, or monitoring workpapers were supplied.",
+      "The monitoring record does not establish whether absent periods were never performed, performed late, or performed but omitted; it only shows that completion through July is not evidenced.",
+      "The ownership record lacks an effective date, approving authority, named accountable individual, and change history, limiting assurance over its currentness.",
+      "The production status of alder-2.1.0 is inferred from the assertion and monitoring record rather than independently established.",
+      "The production status of alder-2.1.0 is suggested by the assertion and monitoring record but was not independently established through deployment evidence.",
+      "The public control digest provides contextual themes only. No conclusion is made regarding formal regulatory, legal, accounting, or policy compliance.",
+      "The public-control digest provides contextual themes only; this review does not determine legal, regulatory, accounting, or formal compliance.",
+      "The review is limited to supplied synthetic extracts. File authenticity, completeness, signatures, approvals, provenance, access controls, and audit trails were not independently verified.",
+      "The review is limited to the supplied synthetic extracts; source-file authenticity, completeness, signatures, approvals, and audit trails were not independently verified.",
+      "The validation summary shows four skipped tests and zero coverage for several listed case profiles, but no corresponding assertions were provided for deciding the adequacy of validation coverage.",
+      "Validation results report four skipped tests and zero coverage for several case profiles. Validation adequacy cannot be concluded because corresponding scope requirements, risk assessments, and assertions were not supplied."
+    ],
+    "elapsed_s": 121.891,
+    "artefact_count": 10,
+    "implementation_fact_count": 87,
+    "methodology_assertion_count": 12,
+    "governance_assertion_count": 4,
+    "finding_count": 6
+  }
+}

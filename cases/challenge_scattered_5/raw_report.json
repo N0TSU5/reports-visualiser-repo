@@ -1,0 +1,455 @@
+{
+  "run_id": "20260823-083410_validate_credit_risk_challenge_scattered",
+  "case_dir": "/Users/marten/programming/code-analysis-solution/projects/synthetic/sme_credit_risk/cases/challenge_scattered",
+  "programme": "validate_credit_risk",
+  "artefacts": [
+    {
+      "path": "code/credit_engine.py",
+      "kind": "code",
+      "sha256": "2d3e4e39a150b91d3d214346b951bc7d3abe65fed440573bfce1f82bd66bd7c0",
+      "size_bytes": 6651
+    },
+    {
+      "path": "code/discount_mixins.py",
+      "kind": "code",
+      "sha256": "ec69ae2a9b0193342e5d1d3586145eae6d7df9c0d1a6e1fcd5485058eafc2a12",
+      "size_bytes": 152
+    },
+    {
+      "path": "code/discount_mixins_hop1.py",
+      "kind": "code",
+      "sha256": "8cef6bdec01921c52a3ad12596e168c58b692816af3ccbc1bdcb3ecb6db8717d",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/discount_mixins_hop2.py",
+      "kind": "code",
+      "sha256": "180ec0eae6f5a240683f1b7c17f175bc4f27cbd0a5f80539006c32a3f423ef37",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/discount_mixins_hop3.py",
+      "kind": "code",
+      "sha256": "49b8e8672e1998d844b18f3757a253de6a06406b06955932dde511a42366599c",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/discount_mixins_hop4.py",
+      "kind": "code",
+      "sha256": "61473f3e702c2e89552e68692a444dc4fdffeeb3e236021b7c06d5b692e5f8fc",
+      "size_bytes": 45
+    },
+    {
+      "path": "code/lgd_bounds_middleware.py",
+      "kind": "code",
+      "sha256": "05bf29f0455349a9d66a689e836a1314fdbb32c4d1b114e26ef26301f898e5b8",
+      "size_bytes": 217
+    },
+    {
+      "path": "code/lgd_bounds_middleware_hop1.py",
+      "kind": "code",
+      "sha256": "c36ce2644ff40a08b718a5fbcde7bd7770bb28fe9968456b7920276b39a0acf9",
+      "size_bytes": 111
+    },
+    {
+      "path": "code/lgd_bounds_middleware_hop2.py",
+      "kind": "code",
+      "sha256": "c8a13cded8e9485e78106b101c0a8a7a8ef0044f05949c084bbb2377442e6ee8",
+      "size_bytes": 111
+    },
+    {
+      "path": "code/lgd_bounds_middleware_hop3.py",
+      "kind": "code",
+      "sha256": "073a47427786bd369e1a30e63e45857f3b124a3c46b88005859412328e5c3258",
+      "size_bytes": 111
+    },
+    {
+      "path": "code/lgd_bounds_middleware_hop4.py",
+      "kind": "code",
+      "sha256": "09f30020317255b8ee5c2908d3a84e8f17a787ded7ce84e3b67f0a88872df43f",
+      "size_bytes": 79
+    },
+    {
+      "path": "code/maturity_db_mock.py",
+      "kind": "code",
+      "sha256": "807180fbd048983cc7ecb149ad54d8a1bc1aca714abe27e5c741e1f42dca14d4",
+      "size_bytes": 168
+    },
+    {
+      "path": "code/maturity_db_mock_hop1.py",
+      "kind": "code",
+      "sha256": "91c31931f369aacf0b32dde617401bdb8746d046a3d35db926bd89f8f9053a0d",
+      "size_bytes": 105
+    },
+    {
+      "path": "code/maturity_db_mock_hop2.py",
+      "kind": "code",
+      "sha256": "d014fcc3dbaf052b6b9d01e7f4563cb478da61d1dc62a3ba269a01afa44dec57",
+      "size_bytes": 105
+    },
+    {
+      "path": "code/maturity_db_mock_hop3.py",
+      "kind": "code",
+      "sha256": "5e7d0f7f11825697397a6357cb91d6df367cdf884c49c929f8e4ebb831beaabc",
+      "size_bytes": 105
+    },
+    {
+      "path": "code/maturity_db_mock_hop4.py",
+      "kind": "code",
+      "sha256": "6675cf162172e0722eb576a17afc2fd485ec13fb0d0d5f28e729488404213d98",
+      "size_bytes": 50
+    },
+    {
+      "path": "code/mock_ead_service.py",
+      "kind": "code",
+      "sha256": "fd4e1f8b4e259befa5e5ac5d455e4ee4abc5ea26ea5e24f0184b6d54d76b917f",
+      "size_bytes": 207
+    },
+    {
+      "path": "code/mock_ead_service_hop1.py",
+      "kind": "code",
+      "sha256": "f7012c1312bbd83c1237aa12b51e3d8471da02befc6756d3982022cd02b02cf1",
+      "size_bytes": 101
+    },
+    {
+      "path": "code/mock_ead_service_hop2.py",
+      "kind": "code",
+      "sha256": "92e30d56e216eb9c270d602bdbdaa3bcef10fb5c0c5288d8b579601562d858a1",
+      "size_bytes": 101
+    },
+    {
+      "path": "code/mock_ead_service_hop3.py",
+      "kind": "code",
+      "sha256": "162cfa0b81d91d97da41149a88ef6a497c3ef3f392a348acf300f088e0c43fa9",
+      "size_bytes": 101
+    },
+    {
+      "path": "code/mock_ead_service_hop4.py",
+      "kind": "code",
+      "sha256": "3705283ac4fee01e919d9bdd02bdf86cab8b577b5823c04eb72dbf6dcf3020d4",
+      "size_bytes": 88
+    },
+    {
+      "path": "code/pd_strategies.py",
+      "kind": "code",
+      "sha256": "f9186aa1f122646da39bbc795d6134ffb14b8ba2bf7db78f6b4be62dcd426133",
+      "size_bytes": 270
+    },
+    {
+      "path": "code/pd_strategies_hop1.py",
+      "kind": "code",
+      "sha256": "d413a63a2024d7dba8c09baab231d1390499b1227e471d690f7abec6a996013a",
+      "size_bytes": 121
+    },
+    {
+      "path": "code/pd_strategies_hop2.py",
+      "kind": "code",
+      "sha256": "c98043d1af802bda355c9fb236702dbe2e47c21175223c5a0b223213a50e7176",
+      "size_bytes": 121
+    },
+    {
+      "path": "code/pd_strategies_hop3.py",
+      "kind": "code",
+      "sha256": "0ba17538eec63bd83bd3c64dfac9744cfed9a23a90564cd3a8f316598b5d67a9",
+      "size_bytes": 121
+    },
+    {
+      "path": "code/pd_strategies_hop4.py",
+      "kind": "code",
+      "sha256": "9d312882f752150885760d0333388fa3fdba3fc1f33700240ff63258ca4b6e67",
+      "size_bytes": 107
+    },
+    {
+      "path": "code/rules_registry.py",
+      "kind": "code",
+      "sha256": "f937b8f4dddc04479c53e73323ea25c3f3470637c6dcae374a66f110c1b32d79",
+      "size_bytes": 248
+    },
+    {
+      "path": "code/rules_registry_hop1.py",
+      "kind": "code",
+      "sha256": "bd9e19c05f2a08f4b38de9934ee884fa30f33dba9ea8ccdac6d803ac7b7617ef",
+      "size_bytes": 89
+    },
+    {
+      "path": "code/rules_registry_hop2.py",
+      "kind": "code",
+      "sha256": "a884acedb4fbc9707aeaa7ac24e04356b7a2d6e83a1cd6ab67f59f953463f53e",
+      "size_bytes": 89
+    },
+    {
+      "path": "code/rules_registry_hop3.py",
+      "kind": "code",
+      "sha256": "4d8ff55ae5b19f8f49d62422ff73592c2ff3e14825dc840a19eabc82639f7ca2",
+      "size_bytes": 89
+    },
+    {
+      "path": "code/rules_registry_hop4.py",
+      "kind": "code",
+      "sha256": "3f6eae2ada3fa825c4738afc5716151aed4ebd00c123d1ed90ab7d08249e27e9",
+      "size_bytes": 75
+    },
+    {
+      "path": "code/sicr_listeners.py",
+      "kind": "code",
+      "sha256": "30084b21013fd5ffc23c5b70035de8d68b4b6088d21ba7c62438054dad0a5652",
+      "size_bytes": 201
+    },
+    {
+      "path": "code/sicr_listeners_hop1.py",
+      "kind": "code",
+      "sha256": "a0e28be3e02ab24ab94abea4a2db706a4e1597728f229e72f312c8d65303e27f",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/sicr_listeners_hop2.py",
+      "kind": "code",
+      "sha256": "e20e5c07ae6d4fb7e1f6969afc5eccc7ee89a1a6dc0c27184f4abb6ac47021e8",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/sicr_listeners_hop3.py",
+      "kind": "code",
+      "sha256": "a15f847f9e45cc9cf2b8d750559c089f904cfab5b6c8b5eff61217f946fc226b",
+      "size_bytes": 97
+    },
+    {
+      "path": "code/sicr_listeners_hop4.py",
+      "kind": "code",
+      "sha256": "b118e9d0039c4ade5d18b8ccc0234e6bcf710ced90dea1fe33e1f6b3a1f9cbbc",
+      "size_bytes": 71
+    },
+    {
+      "path": "config/governance_record.yaml",
+      "kind": "configuration",
+      "sha256": "41ab89c3b5bfe133b9f221dca4bf144f619c5a9114f2039ef8f87d7c7fcbb211",
+      "size_bytes": 308
+    },
+    {
+      "path": "config/model_config.yaml",
+      "kind": "configuration",
+      "sha256": "b3b3c371c0c5cad861f9fbcf14e2d22cdd5a23faaab564ed651f37e34ab3f6ce",
+      "size_bytes": 938
+    },
+    {
+      "path": "config/system_map.yaml",
+      "kind": "configuration",
+      "sha256": "fe92fb9d9445a9b8816bfd651d60bcce5b3aac6f9b9625ba3970d045452d29c6",
+      "size_bytes": 1460
+    },
+    {
+      "path": "data/portfolio.csv",
+      "kind": "data",
+      "sha256": "dd2186d5fc0b418ce567d58deb5e2bea7891e32c0d93baede290d7322fcd9f21",
+      "size_bytes": 962
+    },
+    {
+      "path": "docs/methodology.md",
+      "kind": "document",
+      "sha256": "8580c83d17a906fab27273a18ff076ec92b8c426cbc84faebbd1ed25509361db",
+      "size_bytes": 7143
+    },
+    {
+      "path": "docs/model_governance.md",
+      "kind": "document",
+      "sha256": "c7cc690669b932c0acda2bb1dd3d35f24f100e122db6d7da69084b8d959572d2",
+      "size_bytes": 2166
+    },
+    {
+      "path": "docs/regulatory_control_digest.md",
+      "kind": "document",
+      "sha256": "056d3e5fa9378725158693289b99d4b88172e2485b4eeb99f9b56c099068d24c",
+      "size_bytes": 1600
+    },
+    {
+      "path": "evidence/monitoring_record.json",
+      "kind": "test_evidence",
+      "sha256": "0a4ea9b4d41ab345c568f4e5eccaf4d88dcba37351c18f3edbe1176d0c44b85e",
+      "size_bytes": 305
+    },
+    {
+      "path": "tests/validation_results.json",
+      "kind": "test_evidence",
+      "sha256": "9d4e01e126d1431b88d6dcf7cb007c4fee51839462c67f770cf4ec24e90aaae4",
+      "size_bytes": 708
+    }
+  ],
+  "findings": [
+    {
+      "id": "CA-352DEC65DC",
+      "assertion_id": "GOV-VERSION-001",
+      "title": "Approved Model Version differs from declared intent",
+      "category": "model_change_governance",
+      "severity": 5,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/governance_record.yaml",
+      "location": "executed_at, model_version, summary, coverage_profile, and release_note",
+      "expected": "alder-2.1.0",
+      "observed": "alder-2.0.0",
+      "consequence": "The production change to alder-2.1.0 is not supported by supplied version-specific approval and validation evidence, weakening assurance over the changed implementation.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "id: GOV-VERSION-001; statement: The approval and independent validation evidence applies to production model version alder-2.1.0.; expected: alder-2.1.0; unit: model version"
+        },
+        {
+          "file": "config/governance_record.yaml",
+          "location": "line 3",
+          "snippet": "approved_model_version: alder-2.0.0"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "The approval and independent validation evidence applies to production model version alder-2.1.0."
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "model_version and release_note",
+          "snippet": "\"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version and reporting_date",
+          "snippet": "\"model_version\": \"alder-2.1.0\", \"reporting_date\": \"2026-07-31\""
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "executed_at, model_version, summary, coverage_profile, and release_note",
+          "snippet": "Validation executed 2026-02-12 for alder-2.0.0; 4 tests were skipped; listed profiles had zero coverage; no rerun was recorded after the alder-2.1.0 staging and cash-flow timing change."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Obtain and record formal approval and independent validation for alder-2.1.0, including testing of the staging and cash-flow timing changes. Reconcile the approved-version field with the actual production release and document any interim risk acceptance or rollback decision.",
+      "provenance": [
+        "assertion:GOV-VERSION-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-F4126F30F0",
+      "assertion_id": "GOV-MON-001",
+      "title": "Monitoring Currentness differs from declared intent",
+      "category": "monitoring_governance",
+      "severity": 4,
+      "confidence": 0.985,
+      "adjudication_state": "confirmed",
+      "affected_component": "docs/model_governance.md",
+      "location": "open_exception_count and status_recorded_by_owner",
+      "expected": "current_through_2026-07",
+      "observed": "No mapped implementation fact",
+      "consequence": "Three required monthly monitoring cycles appear outstanding, potentially delaying detection and escalation of drift or performance deterioration. The current status and zero-exception count may understate the control gap.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "id: GOV-MON-001; statement: Monthly monitoring evidence is complete through the 31 July 2026 reporting date.; expected: current_through_2026-07; unit: control state"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "Monthly monitoring evidence is complete through the 31 July 2026 reporting date."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "required_frequency, completed_periods, and latest_completed_period",
+          "snippet": "\"required_frequency\": \"monthly\"; completed periods are 2026-01 through 2026-04; \"latest_completed_period\": \"2026-04\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "status fields",
+          "snippet": "\"open_exception_count\": 0, \"status_recorded_by_owner\": \"current\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "reporting_date, required_frequency, completed_periods, and latest_completed_period",
+          "snippet": "Reporting date is 2026-07-31; frequency is monthly; completed periods are 2026-01 through 2026-04; latest completed period is 2026-04."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "open_exception_count and status_recorded_by_owner",
+          "snippet": "\"open_exception_count\": 0, \"status_recorded_by_owner\": \"current\""
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Complete or provide the May, June, and July 2026 monitoring evidence, investigate why the record was marked current with no open exception, and correct the status or raise and track a monitoring exception.",
+      "provenance": [
+        "assertion:GOV-MON-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    }
+  ],
+  "summary": "Analysed 45 artefacts through 46 cognitive calls and produced 2 adjudicated findings.",
+  "limitations": [
+    "All artefacts were supplied as untrusted case evidence. Their authenticity, provenance, approvals, and completeness were not independently verified.",
+    "All supplied artefacts were treated as untrusted evidence and were assessed only for internal consistency; their authenticity and completeness were not independently verified.",
+    "Assertions were extracted from a single supplied governance document and are recorded as declared evidence without independent corroboration.",
+    "Assertions were extracted only from the explicitly fenced assertion records in docs/methodology.md.",
+    "Narrative details not represented as fenced assertions, including the 60-month lifetime maturity cap, were not added as separate assertions.",
+    "No approval decision, change ticket, validation report, validator identity, organisational chart, conflict assessment, or validation sign-off was supplied.",
+    "No deployment record was supplied; alder-2.1.0 production status is inferred from the monitoring record.",
+    "No implementation assessment, defect determination, or answer-key comparison was performed.",
+    "No implementation assessment, defect inference, or answer-key comparison was performed.",
+    "No underlying approval decision, change ticket, production deployment record, validation report, validator identity, or organisational-independence documentation was supplied.",
+    "The monitoring evidence does not state the due date for a month-end monitoring cycle, creating limited uncertainty over whether July 2026 was due on 31 July; May and June remain clearly missing.",
+    "The public-control digest is contextual only. This review does not determine regulatory, legal, accounting, PRA, EBA, IFRS 9, or other formal compliance.",
+    "The public-control digest provides contextual governance themes but does not itself prove any case-specific control state or determine regulatory, legal, or accounting compliance.",
+    "The validation results contain four skipped tests and zero coverage for several profiles, but the case does not provide acceptance criteria or separate assertions sufficient for definitive control conclusions on each gap.",
+    "The validation results show zero coverage for several listed profiles and four skipped tests, but no corresponding assertions were provided against which to reach separate control decisions."
+  ],
+  "metrics": {
+    "case_hash": "aac8d126fe6568ba3a81db658ae46b2eeab4ee8fdf735a261550a3d00209c85d",
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "cognitive_call_budget": 52,
+    "cognitive_calls_used": 46,
+    "reference_cognitive_calls": 28,
+    "evidence_followup_budget": 24,
+    "evidence_followups_used": 18,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 210872
+    },
+    "excluded_paths": [
+      "answer_key.json",
+      "case.yaml"
+    ],
+    "warnings": [
+      "All artefacts were supplied as untrusted case evidence. Their authenticity, provenance, approvals, and completeness were not independently verified.",
+      "All supplied artefacts were treated as untrusted evidence and were assessed only for internal consistency; their authenticity and completeness were not independently verified.",
+      "Assertions were extracted from a single supplied governance document and are recorded as declared evidence without independent corroboration.",
+      "Assertions were extracted only from the explicitly fenced assertion records in docs/methodology.md.",
+      "Narrative details not represented as fenced assertions, including the 60-month lifetime maturity cap, were not added as separate assertions.",
+      "No approval decision, change ticket, validation report, validator identity, organisational chart, conflict assessment, or validation sign-off was supplied.",
+      "No deployment record was supplied; alder-2.1.0 production status is inferred from the monitoring record.",
+      "No implementation assessment, defect determination, or answer-key comparison was performed.",
+      "No implementation assessment, defect inference, or answer-key comparison was performed.",
+      "No underlying approval decision, change ticket, production deployment record, validation report, validator identity, or organisational-independence documentation was supplied.",
+      "The monitoring evidence does not state the due date for a month-end monitoring cycle, creating limited uncertainty over whether July 2026 was due on 31 July; May and June remain clearly missing.",
+      "The public-control digest is contextual only. This review does not determine regulatory, legal, accounting, PRA, EBA, IFRS 9, or other formal compliance.",
+      "The public-control digest provides contextual governance themes but does not itself prove any case-specific control state or determine regulatory, legal, or accounting compliance.",
+      "The validation results contain four skipped tests and zero coverage for several profiles, but the case does not provide acceptance criteria or separate assertions sufficient for definitive control conclusions on each gap.",
+      "The validation results show zero coverage for several listed profiles and four skipped tests, but no corresponding assertions were provided against which to reach separate control decisions."
+    ],
+    "elapsed_s": 116.965,
+    "artefact_count": 45,
+    "implementation_fact_count": 87,
+    "methodology_assertion_count": 12,
+    "governance_assertion_count": 4,
+    "finding_count": 2
+  }
+}

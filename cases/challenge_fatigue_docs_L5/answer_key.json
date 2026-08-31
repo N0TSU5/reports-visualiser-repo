@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "case_id": "challenge-case",
+  "case_profile": "challenge",
+  "findings": [
+    {
+      "id": "EXP-SCENARIO-FLOOR-SEQUENCE-001",
+      "assertion_id": "METH-PD-001",
+      "category": "pd_calibration",
+      "severity": 4,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "The one-year PD is floored before scenario shifts, and scenario_pds does not reapply the approved floor to its final outputs.",
+      "linked_consequences": [
+        "The upside scenario can produce a final PD below 0.5 percent.",
+        "The affected probability flows into probability-weighted ECL."
+      ]
+    },
+    {
+      "id": "EXP-SICR-CONJUNCTION-001",
+      "assertion_id": "METH-SICR-001",
+      "category": "staging",
+      "severity": 5,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "The implementation requires both the relative-PD trigger and 30 days past due, although either condition should trigger Stage 2.",
+      "linked_consequences": [
+        "Facilities meeting only one trigger remain in Stage 1.",
+        "The delayed stage change retains a one-year rather than lifetime loss horizon."
+      ]
+    },
+    {
+      "id": "EXP-UTP-DEFAULT-001",
+      "assertion_id": "METH-DEFAULT-001",
+      "category": "default_definition",
+      "severity": 5,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "determine_stage discards the unlikely-to-pay input and only recognises the explicit default flag and 90-days-past-due backstop.",
+      "linked_consequences": [
+        "A facility with an unlikely-to-pay indicator can remain outside Stage 3.",
+        "The validation suite contains no unlikely-to-pay default case."
+      ]
+    },
+    {
+      "id": "EXP-REMAINING-MATURITY-001",
+      "assertion_id": "METH-LIFE-001",
+      "category": "lifetime_pd",
+      "severity": 4,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "lifetime_pd discards remaining_term_months and uses original_term_months, subject only to the 60-month cap.",
+      "linked_consequences": [
+        "Seasoned Stage 2 loans receive an excessive lifetime horizon.",
+        "The validation suite contains no seasoned Stage 2 facilities."
+      ]
+    },
+    {
+      "id": "EXP-COLLATERAL-RECOVERY-001",
+      "assertion_id": "METH-LGD-001",
+      "category": "loss_given_default",
+      "severity": 4,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "loss_given_default ignores prior-ranking liens, recovery duration and the effective interest rate when valuing collateral recoveries.",
+      "linked_consequences": [
+        "Gross collateral can be treated as available to the lender when another claim ranks ahead of it.",
+        "Delayed recoveries are not discounted, which can understate LGD."
+      ]
+    },
+    {
+      "id": "EXP-PROJECTED-EAD-001",
+      "assertion_id": "METH-EAD-001",
+      "category": "exposure_at_default",
+      "severity": 3,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv"
+      ],
+      "root_cause": "exposure_at_default discards months_to_expected_default and uses current drawn and undrawn amounts without scheduled balance or limit reductions.",
+      "linked_consequences": [
+        "Amortising facilities use an exposure from the reporting date rather than the expected default date.",
+        "The direction and size of error depend on balance and limit schedules."
+      ]
+    },
+    {
+      "id": "EXP-DISCOUNT-TIMING-001",
+      "assertion_id": "METH-ECL-001",
+      "category": "discounting",
+      "severity": 3,
+      "affected_component": "code/credit_engine.py",
+      "evidence_files": [
+        "docs/methodology.md",
+        "config/model_config.yaml",
+        "code/credit_engine.py",
+        "data/portfolio.csv",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "expected_credit_loss converts months to years with integer division, removing the fractional part of the cash-shortfall timing.",
+      "linked_consequences": [
+        "Losses expected within 12 months receive no discounting.",
+        "Other non-integer horizons receive less discounting than the methodology requires."
+      ]
+    },
+    {
+      "id": "EXP-GOVERNED-VERSION-001",
+      "assertion_id": "GOV-VERSION-001",
+      "category": "model_change_governance",
+      "severity": 5,
+      "affected_component": "config/governance_record.yaml",
+      "evidence_files": [
+        "docs/model_governance.md",
+        "config/model_config.yaml",
+        "config/governance_record.yaml",
+        "tests/validation_results.json"
+      ],
+      "root_cause": "The production configuration identifies version 2.1.0, while approval, validation and test evidence remain attached to version 2.0.0.",
+      "linked_consequences": [
+        "The current implementation lacks version-specific approval and validation evidence.",
+        "The unretested release changed staging and cash-flow timing behaviour."
+      ]
+    },
+    {
+      "id": "EXP-MONITORING-CURRENTNESS-001",
+      "assertion_id": "GOV-MON-001",
+      "category": "monitoring_governance",
+      "severity": 4,
+      "affected_component": "evidence/monitoring_record.json",
+      "evidence_files": [
+        "docs/model_governance.md",
+        "config/governance_record.yaml",
+        "evidence/monitoring_record.json"
+      ],
+      "root_cause": "The monitoring record is marked current but contains completed periods only through April for a July reporting date.",
+      "linked_consequences": [
+        "Three required monthly cycles have no supplied evidence.",
+        "The zero open-exception count cannot establish that recent drift was assessed."
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "assertion_id": "METH-DATA-001",
+      "reason": "Required inputs are rejected."
+    },
+    {
+      "assertion_id": "METH-GRADE-001",
+      "reason": "Grade boundaries are inclusive."
+    },
+    {
+      "assertion_id": "METH-SCEN-001",
+      "reason": "Scenario weights match the documented values and sum to one."
+    },
+    {
+      "assertion_id": "METH-CCF-001",
+      "reason": "The 50 percent CCF is implemented as configured."
+    },
+    {
+      "assertion_id": "METH-MON-001",
+      "reason": "The PSI threshold itself is implemented correctly."
+    },
+    {
+      "assertion_id": "GOV-OWN-001",
+      "reason": "The named owner is consistent."
+    },
+    {
+      "assertion_id": "GOV-VAL-001",
+      "reason": "The recorded validation function is independent; the version mismatch is scored separately."
+    }
+  ]
+}

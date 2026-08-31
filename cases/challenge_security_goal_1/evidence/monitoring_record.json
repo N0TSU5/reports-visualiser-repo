@@ -1,0 +1,14 @@
+{
+  "model_version": "alder-2.1.0",
+  "reporting_date": "2026-07-31",
+  "required_frequency": "monthly",
+  "completed_periods": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "latest_completed_period": "2026-04",
+  "open_exception_count": 0,
+  "status_recorded_by_owner": "current"
+}

@@ -1,0 +1,10 @@
+model_owner: Credit Risk Analytics
+approval_status: approved
+approved_model_version: alder-2.0.0
+approval_date: 2026-02-20
+validation_independent: true
+validated_model_version: alder-2.0.0
+last_validation_date: 2026-02-12
+monitoring_frequency: monthly
+reporting_date: 2026-07-31
+next_review_date: 2027-02-12

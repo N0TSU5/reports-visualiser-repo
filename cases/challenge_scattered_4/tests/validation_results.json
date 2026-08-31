@@ -1,0 +1,26 @@
+{
+  "suite": "alder_release_validation",
+  "executed_at": "2026-02-12T16:20:00Z",
+  "model_version": "alder-2.0.0",
+  "summary": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 4
+  },
+  "coverage_profile": {
+    "seasoned_stage_2_facilities": 0,
+    "thirty_dpd_only_sicr_cases": 0,
+    "unlikely_to_pay_default_cases": 0,
+    "positive_prior_lien_cases": 0,
+    "non_integer_discount_horizons": 0,
+    "scenario_probability_below_floor_checks": 0
+  },
+  "covered_controls": [
+    "missing_input_policy",
+    "grade_boundary",
+    "scenario_weight_sum",
+    "ccf",
+    "monitoring_psi_threshold"
+  ],
+  "release_note": "No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change."
+}

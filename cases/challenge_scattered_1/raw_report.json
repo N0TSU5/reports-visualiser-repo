@@ -1,0 +1,271 @@
+{
+  "run_id": "20260823-082625_validate_credit_risk_challenge_scattered",
+  "case_dir": "/Users/marten/programming/code-analysis-solution/projects/synthetic/sme_credit_risk/cases/challenge_scattered",
+  "programme": "validate_credit_risk",
+  "artefacts": [
+    {
+      "path": "code/credit_engine.py",
+      "kind": "code",
+      "sha256": "2d3e4e39a150b91d3d214346b951bc7d3abe65fed440573bfce1f82bd66bd7c0",
+      "size_bytes": 6651
+    },
+    {
+      "path": "code/discount_mixins.py",
+      "kind": "code",
+      "sha256": "f28b224f4c909e2adfa79d6b225776dc8abe9a5b4922e8d57078444eaae1d3a9",
+      "size_bytes": 101
+    },
+    {
+      "path": "code/lgd_bounds_middleware.py",
+      "kind": "code",
+      "sha256": "89e8008524c1be9085a30bed9ebf1ea87cd5fc4f7ad797e0e0b2d9ff5c9563fa",
+      "size_bytes": 186
+    },
+    {
+      "path": "code/maturity_db_mock.py",
+      "kind": "code",
+      "sha256": "8fe109437f67a2b5a6b1a654e7ded5846f79904cfd825ef2662eb11e8412dfc1",
+      "size_bytes": 114
+    },
+    {
+      "path": "code/mock_ead_service.py",
+      "kind": "code",
+      "sha256": "13722d6c558cc4b678cdfef866c70dad027b0a5241f80d9d97c1cd6502ea025e",
+      "size_bytes": 195
+    },
+    {
+      "path": "code/pd_strategies.py",
+      "kind": "code",
+      "sha256": "ed5358c106ad401b18ecf32c9579a6d6bfdc428c13b7df4909c64fc88b885a2b",
+      "size_bytes": 256
+    },
+    {
+      "path": "code/rules_registry.py",
+      "kind": "code",
+      "sha256": "2ae283535c7080670c9b75597ef52debabdba9551fc6ffd9875d0169ceafee3d",
+      "size_bytes": 235
+    },
+    {
+      "path": "code/sicr_listeners.py",
+      "kind": "code",
+      "sha256": "5a73e809d7a726a44dba1472f743f5881eddabb92e0145944ebb5e74aa7c5a26",
+      "size_bytes": 176
+    },
+    {
+      "path": "config/governance_record.yaml",
+      "kind": "configuration",
+      "sha256": "41ab89c3b5bfe133b9f221dca4bf144f619c5a9114f2039ef8f87d7c7fcbb211",
+      "size_bytes": 308
+    },
+    {
+      "path": "config/model_config.yaml",
+      "kind": "configuration",
+      "sha256": "b3b3c371c0c5cad861f9fbcf14e2d22cdd5a23faaab564ed651f37e34ab3f6ce",
+      "size_bytes": 938
+    },
+    {
+      "path": "config/system_map.yaml",
+      "kind": "configuration",
+      "sha256": "fe92fb9d9445a9b8816bfd651d60bcce5b3aac6f9b9625ba3970d045452d29c6",
+      "size_bytes": 1460
+    },
+    {
+      "path": "data/portfolio.csv",
+      "kind": "data",
+      "sha256": "dd2186d5fc0b418ce567d58deb5e2bea7891e32c0d93baede290d7322fcd9f21",
+      "size_bytes": 962
+    },
+    {
+      "path": "docs/methodology.md",
+      "kind": "document",
+      "sha256": "8580c83d17a906fab27273a18ff076ec92b8c426cbc84faebbd1ed25509361db",
+      "size_bytes": 7143
+    },
+    {
+      "path": "docs/model_governance.md",
+      "kind": "document",
+      "sha256": "c7cc690669b932c0acda2bb1dd3d35f24f100e122db6d7da69084b8d959572d2",
+      "size_bytes": 2166
+    },
+    {
+      "path": "docs/regulatory_control_digest.md",
+      "kind": "document",
+      "sha256": "056d3e5fa9378725158693289b99d4b88172e2485b4eeb99f9b56c099068d24c",
+      "size_bytes": 1600
+    },
+    {
+      "path": "evidence/monitoring_record.json",
+      "kind": "test_evidence",
+      "sha256": "0a4ea9b4d41ab345c568f4e5eccaf4d88dcba37351c18f3edbe1176d0c44b85e",
+      "size_bytes": 305
+    },
+    {
+      "path": "tests/validation_results.json",
+      "kind": "test_evidence",
+      "sha256": "9d4e01e126d1431b88d6dcf7cb007c4fee51839462c67f770cf4ec24e90aaae4",
+      "size_bytes": 708
+    }
+  ],
+  "findings": [
+    {
+      "id": "CA-352DEC65DC",
+      "assertion_id": "GOV-VERSION-001",
+      "title": "Approved Model Version differs from declared intent",
+      "category": "model_change_governance",
+      "severity": 5,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/governance_record.yaml",
+      "location": "executed_at, model_version, and release_note",
+      "expected": "alder-2.1.0",
+      "observed": "alder-2.0.0",
+      "consequence": "The production change to alder-2.1.0 is not covered by the supplied approval and validation evidence, so reliance on those controls for the current release is unsupported.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "id: GOV-VERSION-001; statement: The approval and independent validation evidence applies to production model version alder-2.1.0.; expected: alder-2.1.0"
+        },
+        {
+          "file": "config/governance_record.yaml",
+          "location": "line 3",
+          "snippet": "approved_model_version: alder-2.0.0"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "The approval and independent validation evidence applies to production model version alder-2.1.0."
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "model_version and release_note",
+          "snippet": "\"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version and reporting_date",
+          "snippet": "\"model_version\": \"alder-2.1.0\", \"reporting_date\": \"2026-07-31\""
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "executed_at, model_version, and release_note",
+          "snippet": "\"executed_at\": \"2026-02-12T16:20:00Z\"; \"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Obtain documented approval for alder-2.1.0 and perform version-specific independent validation covering the staging and cash-flow timing change before representing the current release as approved and validated.",
+      "provenance": [
+        "assertion:GOV-VERSION-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-F4126F30F0",
+      "assertion_id": "GOV-MON-001",
+      "title": "Monitoring Currentness differs from declared intent",
+      "category": "monitoring_governance",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "docs/model_governance.md",
+      "location": "reporting_date, open_exception_count, and status_recorded_by_owner",
+      "expected": "current_through_2026-07",
+      "observed": "No mapped implementation fact",
+      "consequence": "Three required monitoring cycles are not evidenced, which could delay identification and escalation of drift or performance deterioration. The recorded \u201ccurrent\u201d status and zero exceptions are unreliable without evidence for the missing periods.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "id: GOV-MON-001; statement: Monthly monitoring evidence is complete through the 31 July 2026 reporting date.; expected: current_through_2026-07"
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "Monthly monitoring evidence is complete through the 31 July 2026 reporting date."
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "required_frequency, completed_periods, and latest_completed_period",
+          "snippet": "\"required_frequency\": \"monthly\"; completed periods are 2026-01 through 2026-04; \"latest_completed_period\": \"2026-04\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "reporting_date, open_exception_count, and status_recorded_by_owner",
+          "snippet": "\"reporting_date\": \"2026-07-31\", \"open_exception_count\": 0, \"status_recorded_by_owner\": \"current\""
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Complete or provide the May, June, and July 2026 monitoring records for alder-2.1.0. Correct the currentness status, raise and track an exception if the cycles were missed, and document owner review and escalation.",
+      "provenance": [
+        "assertion:GOV-MON-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    }
+  ],
+  "summary": "Analysed 17 artefacts through 45 cognitive calls and produced 2 adjudicated findings.",
+  "limitations": [
+    "Assertions were extracted from the supplied untrusted governance record only; no implementation assessment, defect inference, or independent verification was performed.",
+    "Assertions were extracted only from the explicitly fenced assertion records in docs/methodology.md.",
+    "No implementation assessment, defect inference, or answer-key inspection was performed.",
+    "No monitoring reports or execution artefacts for May, June, or July 2026 were supplied; the conclusion is based on the completed-period list in the monitoring record.",
+    "No underlying approval minutes, change approval, deployment record, complete validation report, validator organizational information, or independent validation sign-off was supplied.",
+    "No underlying approval minutes, complete validation report, validator organizational information, or monitoring reports for May through July 2026 were supplied.",
+    "Severity uses a five-point reviewer scale, where 5 denotes the highest potential governance impact.",
+    "Severity uses a five-point reviewer scale, where 5 represents the highest potential governance impact.",
+    "The assessment is restricted to the supplied synthetic records and does not determine formal regulatory, legal, or accounting compliance.",
+    "The governance configuration extracts for ownership, approval version, and validation independence contain no visible effective date, review date, approver, or sign-off.",
+    "The review is limited to the supplied synthetic records and does not establish formal legal, regulatory, or accounting compliance.",
+    "The validation evidence is dated 12 February 2026 and applies to alder-2.0.0. Production use of alder-2.1.0 is supported indirectly by the monitoring record and assertion but is not independently confirmed by deployment evidence."
+  ],
+  "metrics": {
+    "case_hash": "22616df136a0fdf7d2621f20748d97c4d8c55028f27ffca0e1fb89cdd882cf53",
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "cognitive_call_budget": 52,
+    "cognitive_calls_used": 45,
+    "reference_cognitive_calls": 28,
+    "evidence_followup_budget": 24,
+    "evidence_followups_used": 17,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 207283
+    },
+    "excluded_paths": [
+      "answer_key.json",
+      "case.yaml"
+    ],
+    "warnings": [
+      "Assertions were extracted from the supplied untrusted governance record only; no implementation assessment, defect inference, or independent verification was performed.",
+      "Assertions were extracted only from the explicitly fenced assertion records in docs/methodology.md.",
+      "No implementation assessment, defect inference, or answer-key inspection was performed.",
+      "No monitoring reports or execution artefacts for May, June, or July 2026 were supplied; the conclusion is based on the completed-period list in the monitoring record.",
+      "No underlying approval minutes, change approval, deployment record, complete validation report, validator organizational information, or independent validation sign-off was supplied.",
+      "No underlying approval minutes, complete validation report, validator organizational information, or monitoring reports for May through July 2026 were supplied.",
+      "Severity uses a five-point reviewer scale, where 5 denotes the highest potential governance impact.",
+      "Severity uses a five-point reviewer scale, where 5 represents the highest potential governance impact.",
+      "The assessment is restricted to the supplied synthetic records and does not determine formal regulatory, legal, or accounting compliance.",
+      "The governance configuration extracts for ownership, approval version, and validation independence contain no visible effective date, review date, approver, or sign-off.",
+      "The review is limited to the supplied synthetic records and does not establish formal legal, regulatory, or accounting compliance.",
+      "The validation evidence is dated 12 February 2026 and applies to alder-2.0.0. Production use of alder-2.1.0 is supported indirectly by the monitoring record and assertion but is not independently confirmed by deployment evidence."
+    ],
+    "elapsed_s": 115.819,
+    "artefact_count": 17,
+    "implementation_fact_count": 87,
+    "methodology_assertion_count": 12,
+    "governance_assertion_count": 4,
+    "finding_count": 2
+  }
+}

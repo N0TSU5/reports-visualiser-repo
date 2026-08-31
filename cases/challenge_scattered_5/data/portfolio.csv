@@ -1,0 +1,9 @@
+facility_id,sector,leverage,interest_cover,days_past_due,balance,undrawn,collateral,prior_liens,origination_pd,original_term_months,remaining_term_months,months_to_expected_default,recovery_months,effective_interest_rate,default_flag,unlikely_to_pay
+CHL-001,manufacturing,3.8,2.2,8,610000,120000,420000,80000,0.021,60,18,9,24,0.061,false,false
+CHL-002,services,4.2,1.9,35,515000,180000,300000,0,0.038,60,42,12,18,0.058,false,false
+CHL-003,retail,5.1,1.2,5,330000,50000,190000,45000,0.044,48,30,6,30,0.074,false,true
+CHL-004,manufacturing,2.4,3.8,0,950000,150000,1100000,350000,0.012,84,33,15,36,0.049,false,false
+CHL-005,services,5.7,0.9,62,280000,60000,90000,20000,0.031,60,21,5,27,0.069,false,false
+CHL-006,retail,3.0,3.1,3,745000,90000,310000,0,0.018,72,54,17,12,0.064,false,false
+CHL-007,manufacturing,6.2,0.8,96,390000,30000,140000,50000,0.046,60,12,3,42,0.076,false,false
+CHL-008,services,1.7,6.2,0,420000,80000,500000,0,0.008,60,57,24,9,0.052,false,false

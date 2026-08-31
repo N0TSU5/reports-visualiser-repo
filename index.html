@@ -43,6 +43,7 @@
         <button class="tab-btn" data-target="tab-code">Browse Code</button>
         <button class="tab-btn" data-target="tab-diff">Diff Viewer</button>
         <button class="tab-btn" data-target="tab-agent">Agent Report</button>
+        <button class="tab-btn" data-target="tab-bundle">Case Bundle</button>
       </div>
     </header>
 
@@ -52,7 +53,7 @@
       <div id="welcome-screen" style="text-align: center; margin-top: 100px;">
         <h2 style="font-size: 2rem; margin-bottom: 16px; color: var(--accent);">CodeX Failure Mode Evaluation Dashboard</h2>
         <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6;">
-          Explore the results of our 6 synthetic challenge bundles injected with Long Context and Security failure modes. Select a bundle from the sidebar to view the organic false negatives the agent missed.
+          Explore the results of 6 synthetic challenge bundles injected with Long Context and Security failure modes. Select a bundle from the sidebar to view the false negatives the agent missed, browse the mutated code, and open the full case directory the agent was given. <strong>Fatigue</strong> was re-run after repairing a case-construction fault that invalidated the original measurements &mdash; see its description for detail.
         </p>
       </div>
 
@@ -81,6 +82,22 @@
           <div class="glass defects-list missed">
             <h3>Missed Defects (False Negatives) <span class="count-badge" id="count-missed">0</span></h3>
             <div id="list-missed"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Case Bundle Tab: the full directory the agent was given -->
+      <div id="tab-bundle" class="tab-pane">
+        <div class="glass desc-card" style="margin-bottom:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <label for="bundle-dir-selector" style="color:var(--text-muted); font-size:0.9rem;">Case directory</label>
+          <select id="bundle-dir-selector" style="background:rgba(15,23,42,0.9); color:var(--text-main); border:1px solid var(--accent); border-radius:6px; padding:6px 10px; font-size:0.9rem;"></select>
+          <span id="bundle-dir-meta" style="color:var(--text-muted); font-size:0.85rem;"></span>
+        </div>
+        <div class="code-viewer">
+          <div class="file-selector" id="bundle-tree" style="max-height:70vh; overflow-y:auto;"></div>
+          <div class="glass code-container">
+            <pre><code id="bundle-file-block">Select a file to view...</code></pre>
           </div>
         </div>
       </div>
@@ -123,6 +140,7 @@
 
   <!-- Load data first, then app logic -->
   <script src="data.js"></script>
+  <script src="cases.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

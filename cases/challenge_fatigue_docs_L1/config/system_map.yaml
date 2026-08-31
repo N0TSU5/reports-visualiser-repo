@@ -1,0 +1,41 @@
+risk_dependency_graph:
+  pd_floor_application:
+    path: code/credit_engine.py
+    span: "146:207"
+    functions: [one_year_pd, scenario_pds]
+    consequences: [scenario_probability, grade_assignment, expected_credit_loss]
+  sicr_rule:
+    path: code/credit_engine.py
+    span: "180:196"
+    functions: [determine_stage]
+    consequences: [stage_assignment, loss_horizon, expected_credit_loss]
+  default_rule:
+    path: code/credit_engine.py
+    span: "180:196"
+    functions: [determine_stage]
+    consequences: [stage_3_assignment, probability_of_default, expected_credit_loss]
+  lifetime_horizon_basis:
+    path: code/credit_engine.py
+    span: "169:177"
+    functions: [lifetime_pd, calculate_facility]
+    consequences: [stage_2_probability, expected_credit_loss]
+  collateral_recovery_basis:
+    path: code/credit_engine.py
+    span: "210:220"
+    functions: [loss_given_default]
+    consequences: [loss_given_default, expected_credit_loss]
+  ead_balance_basis:
+    path: code/credit_engine.py
+    span: "223:229"
+    functions: [exposure_at_default]
+    consequences: [exposure_at_default, expected_credit_loss]
+  discount_timing:
+    path: code/credit_engine.py
+    span: "232:246"
+    functions: [expected_credit_loss]
+    consequences: [present_value, expected_credit_loss]
+evidence_dependencies:
+  implementation: code/credit_engine.py
+  portfolio: data/portfolio.csv
+  validation: tests/validation_results.json
+  monitoring: evidence/monitoring_record.json

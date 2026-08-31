@@ -1,0 +1,669 @@
+{
+  "run_id": "20260831-215112_validate_credit_risk_fatigue_docs_l1",
+  "case_dir": "/Users/marten/programming/pilotauditffs/code-analysis-solution/projects/synthetic/sme_credit_risk/cases/fatigue_docs_L1",
+  "programme": "validate_credit_risk",
+  "artefacts": [
+    {
+      "path": "code/credit_engine.py",
+      "kind": "code",
+      "sha256": "6257824205e3e5ac602674b2fd95df4214a4d1b8cd5fa2436d8156b8d52ae94f",
+      "size_bytes": 10557
+    },
+    {
+      "path": "config/governance_record.yaml",
+      "kind": "configuration",
+      "sha256": "41ab89c3b5bfe133b9f221dca4bf144f619c5a9114f2039ef8f87d7c7fcbb211",
+      "size_bytes": 308
+    },
+    {
+      "path": "config/model_config.yaml",
+      "kind": "configuration",
+      "sha256": "b3b3c371c0c5cad861f9fbcf14e2d22cdd5a23faaab564ed651f37e34ab3f6ce",
+      "size_bytes": 938
+    },
+    {
+      "path": "config/system_map.yaml",
+      "kind": "configuration",
+      "sha256": "6d62a65b478bbdbb85cfe9deb93b2bef71d4532dd0f00a98dae4439e387b0a13",
+      "size_bytes": 1469
+    },
+    {
+      "path": "data/portfolio.csv",
+      "kind": "data",
+      "sha256": "dd2186d5fc0b418ce567d58deb5e2bea7891e32c0d93baede290d7322fcd9f21",
+      "size_bytes": 962
+    },
+    {
+      "path": "docs/methodology.md",
+      "kind": "document",
+      "sha256": "8580c83d17a906fab27273a18ff076ec92b8c426cbc84faebbd1ed25509361db",
+      "size_bytes": 7143
+    },
+    {
+      "path": "docs/model_governance.md",
+      "kind": "document",
+      "sha256": "c7cc690669b932c0acda2bb1dd3d35f24f100e122db6d7da69084b8d959572d2",
+      "size_bytes": 2166
+    },
+    {
+      "path": "docs/regulatory_control_digest.md",
+      "kind": "document",
+      "sha256": "056d3e5fa9378725158693289b99d4b88172e2485b4eeb99f9b56c099068d24c",
+      "size_bytes": 1600
+    },
+    {
+      "path": "evidence/monitoring_record.json",
+      "kind": "test_evidence",
+      "sha256": "0a4ea9b4d41ab345c568f4e5eccaf4d88dcba37351c18f3edbe1176d0c44b85e",
+      "size_bytes": 305
+    },
+    {
+      "path": "tests/validation_results.json",
+      "kind": "test_evidence",
+      "sha256": "9d4e01e126d1431b88d6dcf7cb007c4fee51839462c67f770cf4ec24e90aaae4",
+      "size_bytes": 708
+    }
+  ],
+  "findings": [
+    {
+      "id": "CA-352DEC65DC",
+      "assertion_id": "GOV-VERSION-001",
+      "title": "Approved Model Version differs from declared intent",
+      "category": "model_change_governance",
+      "severity": 5,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/governance_record.yaml",
+      "location": "model_version and reporting_date",
+      "expected": "alder-2.1.0",
+      "observed": "alder-2.0.0",
+      "consequence": "The current production release lacks demonstrated version-specific approval and validation coverage, so reliance on the earlier evidence may leave changes in alder-2.1.0 unchallenged.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "id: GOV-VERSION-001; statement: The approval and independent validation evidence applies to production model version alder-2.1.0.; expected: alder-2.1.0"
+        },
+        {
+          "file": "config/governance_record.yaml",
+          "location": "line 3",
+          "snippet": "approved_model_version: alder-2.0.0"
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "model_version and release_note",
+          "snippet": "\"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version",
+          "snippet": "\"model_version\": \"alder-2.1.0\""
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0019-L0031",
+          "snippet": "The approval and independent validation evidence applies to production model version alder-2.1.0."
+        },
+        {
+          "file": "tests/validation_results.json",
+          "location": "executed_at, model_version and release_note",
+          "snippet": "Executed 2026-02-12; \"model_version\": \"alder-2.0.0\"; \"No rerun was recorded after the alder-2.1.0 staging and cash-flow timing change.\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "model_version and reporting_date",
+          "snippet": "\"model_version\": \"alder-2.1.0\"; \"reporting_date\": \"2026-07-31\""
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Obtain and record formal approval and independent validation for alder-2.1.0, including testing of the staging and cash-flow timing changes, or reconcile the production version if alder-2.1.0 was recorded incorrectly.",
+      "provenance": [
+        "assertion:GOV-VERSION-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-D2E091D62B",
+      "assertion_id": "METH-ECL-001",
+      "title": "Discount Timing differs from declared intent",
+      "category": "discounting",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "lines 245-246",
+      "expected": "monthly_fractional",
+      "observed": "monthly_fractional",
+      "consequence": "Losses with horizons below 12 months receive no discounting, while losses at other non-integer-year horizons are under-discounted; for example, an 18-month shortfall is discounted for only one year instead of 1.5 years, overstating present-value ECL.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0163-L0175",
+          "snippet": "id: METH-ECL-001; statement: Expected credit loss is discounted using fractional monthly timing rather than completed whole years.; expected: monthly_fractional"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 34",
+          "snippet": "discount_timing: monthly_fractional"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 32",
+          "snippet": "discount_timing:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0163-L0175",
+          "snippet": "Expected credit loss is discounted using fractional monthly timing rather than completed whole years."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "L245-L246",
+          "snippet": "horizon_years = months_to_cash_shortfall // 12\nreturn weighted_loss / ((1.0 + effective_interest_rate) ** horizon_years)"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 32",
+          "snippet": "discount_timing: ... functions:[\"expected_credit_loss\"], path:\"code/credit_engine.py\", span:\"232:246\""
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "lines 245-246",
+          "snippet": "horizon_years = months_to_cash_shortfall // 12\nreturn weighted_loss / ((1.0 + effective_interest_rate) ** horizon_years)"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Replace whole-year floor division with a fractional exponent such as `months_to_cash_shortfall / 12.0`, honor or validate the configured timing convention, and add tests for short and non-integer-year horizons such as 1, 6, and 18 months.",
+      "provenance": [
+        "assertion:METH-ECL-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-5089540F53",
+      "assertion_id": "METH-LGD-001",
+      "title": "Collateral Recovery Basis differs from declared intent",
+      "category": "loss_given_default",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "210:220",
+      "expected": "net_prior_liens_discounted",
+      "observed": "net_prior_liens_discounted",
+      "consequence": "Collateral recoveries can be overstated, causing LGD and downstream expected credit loss to be understated for facilities with prior-ranking liens or delayed recoveries.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0121-L0133",
+          "snippet": "id: METH-LGD-001; statement: Collateral recovery is net of prior-ranking liens and discounted over the expected recovery period before LGD is calculated.; expected: net_prior_liens_discounted"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 27",
+          "snippet": "collateral_recovery_basis: net_prior_liens_discounted"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 22",
+          "snippet": "collateral_recovery_basis:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0121-L0133",
+          "snippet": "Collateral recovery is net of prior-ranking liens and discounted over the expected recovery period before LGD is calculated."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "210:220",
+          "snippet": "prior_liens, recovery_months, and effective_interest_rate are function inputs, but eligible_collateral = collateral * (1.0 - config[\"collateral_haircut\"]); LGD is then returned from the resulting unsecured_share plus downturn_lgd_addon."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "210:220",
+          "snippet": "eligible_collateral = collateral * (1.0 - config[\"collateral_haircut\"]); unsecured_share = max(0.0, balance - eligible_collateral) / max(balance, 1.0); return min(1.0, unsecured_share + config[\"downturn_lgd_addon\"])"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Before calculating the unsecured share, subtract prior-ranking liens from eligible collateral and discount the resulting expected recovery over recovery_months using effective_interest_rate. Add tests demonstrating that LGD increases when prior liens or the recovery period increase.",
+      "provenance": [
+        "assertion:METH-LGD-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-F4126F30F0",
+      "assertion_id": "GOV-MON-001",
+      "title": "Monitoring Currentness differs from declared intent",
+      "category": "monitoring_governance",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "docs/model_governance.md",
+      "location": "L0047-L0059",
+      "expected": "current_through_2026-07",
+      "observed": "No mapped implementation fact",
+      "consequence": "Three expected monthly monitoring cycles are not evidenced, potentially delaying detection and escalation of model drift or performance deterioration. The recorded current status and zero open exceptions are unreliable without reconciliation.",
+      "evidence": [
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "id: GOV-MON-001; statement: Monthly monitoring evidence is complete through the 31 July 2026 reporting date.; expected: current_through_2026-07"
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "required_frequency, completed_periods and latest_completed_period",
+          "snippet": "\"required_frequency\": \"monthly\"; completed periods are 2026-01 through 2026-04; \"latest_completed_period\": \"2026-04\""
+        },
+        {
+          "file": "evidence/monitoring_record.json",
+          "location": "reporting_date, open_exception_count and status_recorded_by_owner",
+          "snippet": "\"reporting_date\": \"2026-07-31\"; \"open_exception_count\": 0; \"status_recorded_by_owner\": \"current\""
+        },
+        {
+          "file": "docs/model_governance.md",
+          "location": "L0047-L0059",
+          "snippet": "Monthly monitoring evidence is complete through the 31 July 2026 reporting date."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "governance_reviewer": "mismatch",
+        "governance_challenger": "mismatch"
+      },
+      "suggested_action": "Complete or provide monitoring evidence for May through July 2026, assess whether exceptions should have been opened, and correct the owner-recorded current status until the gap is resolved.",
+      "provenance": [
+        "assertion:GOV-MON-001",
+        "reviewer:governance_reviewer",
+        "reviewer:governance_challenger"
+      ]
+    },
+    {
+      "id": "CA-D23E4BDDCF",
+      "assertion_id": "METH-SICR-001",
+      "title": "Sicr Rule differs from declared intent",
+      "category": "staging",
+      "severity": 4,
+      "confidence": 0.99,
+      "adjudication_state": "unresolved",
+      "affected_component": "config/model_config.yaml",
+      "location": "180:196",
+      "expected": "relative_or_30_dpd",
+      "observed": "relative_or_30_dpd",
+      "consequence": "A non-defaulted facility meeting only one SICR indicator remains in Stage 1, delaying recognition of lifetime expected credit losses and potentially understating the loss allowance.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0057-L0069",
+          "snippet": "id: METH-SICR-001; statement: A relative probability increase of at least two or 30 days past due triggers Stage 2, subject to any separately evidenced rebuttal.; expected: relative_or_30_dpd"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 13",
+          "snippet": "sicr_rule: relative_or_30_dpd"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 7",
+          "snippet": "sicr_rule:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0057-L0069",
+          "snippet": "A relative probability increase of at least two or 30 days past due triggers Stage 2, subject to any separately evidenced rebuttal."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "180:196",
+          "snippet": "if (relative_change >= config[\"sicr_relative_threshold\"] and days_past_due >= config[\"sicr_days_past_due_backstop\"]): return 2; return 1"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "insufficient_evidence"
+      },
+      "suggested_action": "Change the Stage 2 condition from `and` to `or`, implement or explicitly map any approved rebuttal mechanism, and add tests for relative-threshold-only, 30-DPD-only, both-indicators, neither-indicator, rebuttal, and default cases.",
+      "provenance": [
+        "assertion:METH-SICR-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-75B675DD6F",
+      "assertion_id": "METH-DEFAULT-001",
+      "title": "Default Rule differs from declared intent",
+      "category": "default_definition",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "line 12",
+      "expected": "default_flag_or_utp_or_90_dpd",
+      "observed": "default_flag_or_utp_or_90_dpd",
+      "consequence": "An SME facility marked unlikely to pay, but without a default flag or 90 days past due, will remain in Stage 1 or may enter Stage 2 rather than Stage 3, potentially understating expected credit loss.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0071-L0083",
+          "snippet": "id: METH-DEFAULT-001; statement: A default flag, an unlikely-to-pay indicator or at least 90 days past due causes Stage 3 treatment.; expected: default_flag_or_utp_or_90_dpd"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 16",
+          "snippet": "default_rule: default_flag_or_utp_or_90_dpd"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 12",
+          "snippet": "default_rule:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0071-L0083",
+          "snippet": "A default flag, an unlikely-to-pay indicator or at least 90 days past due causes Stage 3 treatment."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "180:196",
+          "snippet": "185:     unlikely_to_pay: bool,\n188:     if default_flag or days_past_due >= config[\"default_days_past_due\"]:\n189:         return 3"
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "180:196",
+          "snippet": "unlikely_to_pay is accepted at line 185, but the Stage 3 condition at line 188 is: if default_flag or days_past_due >= config[\"default_days_past_due\"]: return 3. No unlikely_to_pay condition is present."
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 12",
+          "snippet": "default_rule is mapped to determine_stage in code/credit_engine.py, span 180:196, with consequences for stage_3_assignment, probability_of_default, and expected_credit_loss."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Include `unlikely_to_pay` as an independent condition in the Stage 3 branch, and add tests showing that each of the three triggers alone results in Stage 3.",
+      "provenance": [
+        "assertion:METH-DEFAULT-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-2FCD2F821B",
+      "assertion_id": "METH-EAD-001",
+      "title": "Ead Balance Basis differs from declared intent",
+      "category": "exposure_at_default",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "223:229",
+      "expected": "projected_at_default",
+      "observed": "projected_at_default",
+      "consequence": "Where principal balances or commitment limits decline before expected default, EAD\u2014and consequently expected credit loss\u2014can be overstated by using unadjusted current balance and undrawn amounts.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0135-L0147",
+          "snippet": "id: METH-EAD-001; statement: Exposure at default uses projected drawn balance and available undrawn commitment at the expected default date.; expected: projected_at_default"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 29",
+          "snippet": "ead_balance_basis: projected_at_default"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 27",
+          "snippet": "ead_balance_basis:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0135-L0147",
+          "snippet": "Exposure at default uses projected drawn balance and available undrawn commitment at the expected default date.; expected: projected_at_default"
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "223:229",
+          "snippet": "def exposure_at_default(balance: float, undrawn: float, months_to_expected_default: int, config: dict[str, Any]) -> float: return balance + (config[\"ccf\"] * undrawn)"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0135-L0147",
+          "snippet": "Exposure at default uses projected drawn balance and available undrawn commitment at the expected default date."
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 27",
+          "snippet": "ead_balance_basis maps to exposure_at_default in code/credit_engine.py span 223:229, with consequences for exposure_at_default and expected_credit_loss."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "223:229",
+          "snippet": "def exposure_at_default(balance, undrawn, months_to_expected_default, config): ... return balance + (config[\"ccf\"] * undrawn)"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Project the drawn balance and available undrawn commitment through `months_to_expected_default`, applying scheduled principal and commitment-limit reductions, before calculating EAD. Add tests demonstrating that EAD changes with the expected-default date for amortising facilities.",
+      "provenance": [
+        "assertion:METH-EAD-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-1CD6720715",
+      "assertion_id": "METH-LIFE-001",
+      "title": "Lifetime Horizon Basis differs from declared intent",
+      "category": "lifetime_pd",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "confirmed",
+      "affected_component": "config/model_config.yaml",
+      "location": "169:177",
+      "expected": "remaining_contractual_maturity",
+      "observed": "remaining_contractual_maturity",
+      "consequence": "For seasoned Stage 2 loans whose remaining maturity is shorter than their original term or the horizon cap, lifetime PD is calculated over an excessive horizon, potentially overstating expected credit loss.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0089-L0101",
+          "snippet": "id: METH-LIFE-001; statement: Lifetime probability uses remaining contractual maturity rather than original term.; expected: remaining_contractual_maturity"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 11",
+          "snippet": "lifetime_horizon_basis: remaining_contractual_maturity"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 17",
+          "snippet": "lifetime_horizon_basis:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0089-L0101",
+          "snippet": "Lifetime probability uses remaining contractual maturity rather than original term.; expected: remaining_contractual_maturity"
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "169:177",
+          "snippet": "remaining_term_months: int, ... horizon_months = min(original_term_months, config[\"lifetime_horizon_cap_months\"])"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0089-L0101",
+          "snippet": "Lifetime probability uses remaining contractual maturity rather than original term."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "169:177",
+          "snippet": "def lifetime_pd(... original_term_months, remaining_term_months, config ...): horizon_months = min(original_term_months, config[\"lifetime_horizon_cap_months\"])"
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "mismatch"
+      },
+      "suggested_action": "Change lifetime_pd to derive horizon_months from remaining_term_months when lifetime_horizon_basis is remaining_contractual_maturity, apply any valid cap afterward, and add a seasoned-loan test where original and remaining terms differ.",
+      "provenance": [
+        "assertion:METH-LIFE-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    },
+    {
+      "id": "CA-007CD117F3",
+      "assertion_id": "METH-PD-001",
+      "title": "Pd Floor Application differs from declared intent",
+      "category": "pd_calibration",
+      "severity": 3,
+      "confidence": 0.99,
+      "adjudication_state": "unresolved",
+      "affected_component": "config/model_config.yaml",
+      "location": "169-177",
+      "expected": "post_scenario",
+      "observed": "post_scenario",
+      "consequence": "Upside or other downward scenario shifts can generate final PDs below the approved 0.5 percent lower bound, causing affected scenario expected credit losses to be understated.",
+      "evidence": [
+        {
+          "file": "docs/methodology.md",
+          "location": "L0011-L0023",
+          "snippet": "id: METH-PD-001; statement: The 0.5 percent probability floor is applied after forward-looking scenario adjustments.; expected: post_scenario"
+        },
+        {
+          "file": "config/model_config.yaml",
+          "location": "line 4",
+          "snippet": "pd_floor_application: post_scenario"
+        },
+        {
+          "file": "config/system_map.yaml",
+          "location": "line 2",
+          "snippet": "pd_floor_application:"
+        },
+        {
+          "file": "docs/methodology.md",
+          "location": "L0011-L0023",
+          "snippet": "The 0.5 percent probability floor is applied after forward-looking scenario adjustments."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "146-156",
+          "snippet": "raw_pd = 1.0 / (1.0 + math.exp(-logit)); return min(config[\"pd_cap\"], max(config[\"pd_floor\"], raw_pd))"
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "199-207",
+          "snippet": "scenario_pds computes scenario-shifted probabilities and returns them directly without applying config[\"pd_floor\"]."
+        },
+        {
+          "file": "code/credit_engine.py",
+          "location": "169-177",
+          "snippet": "lifetime_pd derives cumulative PD from annual_pd and returns it without any explicit post-scenario floor."
+        }
+      ],
+      "deterministic_corroboration": [],
+      "reviewer_verdicts": {
+        "focused_reviewer": "mismatch",
+        "contextual_challenger": "insufficient_evidence"
+      },
+      "suggested_action": "Apply the configured 0.5 percent floor to each probability after its scenario adjustment, before the result is used for grade assignment, lifetime derivation, or expected credit loss. Add tests with a base PD near the floor and a negative scenario shift to verify that final one-year and lifetime scenario probabilities do not breach the approved bound.",
+      "provenance": [
+        "assertion:METH-PD-001",
+        "reviewer:focused_reviewer",
+        "reviewer:contextual_challenger",
+        "control:typed_compare:text"
+      ]
+    }
+  ],
+  "summary": "Analysed 10 artefacts through 44 cognitive calls and produced 9 adjudicated findings.",
+  "limitations": [
+    "Assertions were extracted from a single supplied methodology document.",
+    "No production deployment record, approval minutes, change approval, full validation report, validator identity, organisational chart, monitoring reports, or exception workflow was supplied.",
+    "No underlying approval minutes, validation report, validator identity, organisational chart, monitoring reports, or production deployment record was supplied.",
+    "The assessment is limited to the supplied synthetic records and does not determine formal regulatory, legal, or accounting compliance.",
+    "The governance configuration excerpts do not show effective dates, approvers, record version, or change history, limiting assessment of currentness and authority.",
+    "The monitoring record identifies alder-2.1.0 but does not independently prove that this was the deployed production version.",
+    "The narrative mentions a 60-month cap on remaining contractual maturity at L0087, but no separately identified fenced assertion for that cap was supplied.",
+    "The public-control digest supplies general context only and was not treated as proof that any specific control operated effectively.",
+    "The public-control digest was treated only as contextual material, not as evidence that any control operated effectively or that any regulatory expectation was satisfied.",
+    "The review is limited to the supplied synthetic records and does not establish formal regulatory, legal, or accounting compliance.",
+    "The severity scale is not defined in the evidence; ratings use a relative 1-to-5 scale, with 5 treated as most severe.",
+    "The severity scale was not defined in the evidence; ratings use a relative 1-to-5 scale, where 5 is most severe.",
+    "The validation evidence reports four skipped tests and zero cases in several coverage categories, but the reasons and materiality of those gaps are not supplied.",
+    "This extraction records declared requirements only; it does not assess implementation, test results, compliance or defects."
+  ],
+  "metrics": {
+    "case_hash": "cbae9e54758d2f05d72587500c58c16770c65c1aebd8939f5185e0bac16f7b9e",
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "cognitive_call_budget": 52,
+    "cognitive_calls_used": 44,
+    "reference_cognitive_calls": 28,
+    "evidence_followup_budget": 24,
+    "evidence_followups_used": 16,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 199764
+    },
+    "excluded_paths": [
+      "answer_key.json",
+      "case.yaml"
+    ],
+    "warnings": [
+      "Assertions were extracted from a single supplied methodology document.",
+      "No production deployment record, approval minutes, change approval, full validation report, validator identity, organisational chart, monitoring reports, or exception workflow was supplied.",
+      "No underlying approval minutes, validation report, validator identity, organisational chart, monitoring reports, or production deployment record was supplied.",
+      "The assessment is limited to the supplied synthetic records and does not determine formal regulatory, legal, or accounting compliance.",
+      "The governance configuration excerpts do not show effective dates, approvers, record version, or change history, limiting assessment of currentness and authority.",
+      "The monitoring record identifies alder-2.1.0 but does not independently prove that this was the deployed production version.",
+      "The narrative mentions a 60-month cap on remaining contractual maturity at L0087, but no separately identified fenced assertion for that cap was supplied.",
+      "The public-control digest supplies general context only and was not treated as proof that any specific control operated effectively.",
+      "The public-control digest was treated only as contextual material, not as evidence that any control operated effectively or that any regulatory expectation was satisfied.",
+      "The review is limited to the supplied synthetic records and does not establish formal regulatory, legal, or accounting compliance.",
+      "The severity scale is not defined in the evidence; ratings use a relative 1-to-5 scale, with 5 treated as most severe.",
+      "The severity scale was not defined in the evidence; ratings use a relative 1-to-5 scale, where 5 is most severe.",
+      "The validation evidence reports four skipped tests and zero cases in several coverage categories, but the reasons and materiality of those gaps are not supplied.",
+      "This extraction records declared requirements only; it does not assess implementation, test results, compliance or defects."
+    ],
+    "elapsed_s": 713.793,
+    "artefact_count": 10,
+    "implementation_fact_count": 87,
+    "methodology_assertion_count": 12,
+    "governance_assertion_count": 4,
+    "finding_count": 9
+  }
+}
